@@ -6,9 +6,9 @@ export default function ({ item }) {
             {/* item header */}
             <div className='item-header'>
                 <div className='item-left'>
-                    <span className='item-course'>풀스택 9기</span>
-                    <span className='item-name'>비닝비닝</span>
-                    <span className='item-date'>2025.07.02 · 17:50</span>
+                    <span className='course'>{item.author.course}</span>
+                    <span className='name'>{item.author.name}</span>
+                    <span className='date'>{item.createdAt}</span>
                 </div>
                 <div className='item-right'>
                     <div className='reaction'>
