@@ -69,24 +69,3 @@
     font-weight: 700;
     line-height: 20px; /* 125% */
 }
-
-.comment-form {
-    display: flex;
-    height: 276px;
-    padding: 24px 41px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    align-self: stretch;
-    border-radius: 20px;
-    background: #fff;
-}
-
-.form-inner {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 24px;
-    background: #eee;
-}

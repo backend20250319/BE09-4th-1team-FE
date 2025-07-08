@@ -4,7 +4,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
     align-self: stretch;
     border-radius: 20px;
     background: #eee;
@@ -61,11 +60,40 @@
     gap: 12px;
 }
 
+.item-right .reaction {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.item-right .icon {
+    width: 24px;
+    height: 24px;
+}
+
+.item-right .like-count {
+    color: var(--PlayData-purple-light, #8876d9);
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px; /* 125% */
+}
+
+.item-right .unlike-count {
+    color: var(--Black, #000);
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px; /* 125% */
+}
+
 .divider {
-    border: none;
+    width: 100%;
     height: 1px;
-    align-self: stretch;
-    background: #d9d9d9;
+    background-color: #d9d9d9;
+    border: none;
 }
 
 .content-container {
