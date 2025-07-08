@@ -1,0 +1,57 @@
+.time-selection-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.time-selection-box {
+  width: 920px;
+  height: 564px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  padding: 32px 24px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.time-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.time-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.time-btn {
+  padding: 10px 24px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #f3f4f6;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s;
+}
+.time-btn.selected {
+  background: #a78bfa;
+  color: #fff;
+  border: 1.5px solid #a78bfa;
+  box-shadow: 0 2px 8px rgba(167, 139, 250, 0.12);
+}
+.time-btn.disabled {
+  background: #f9fafb;
+  color: #bbb;
+  border: 1px solid #e5e7eb;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
