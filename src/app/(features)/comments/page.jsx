@@ -7,12 +7,9 @@ export default function Page() {
 
     return (
         <div style={{ padding: '2rem' }}>
-            <h1>게시글 페이지</h1>
-            <p>이곳은 게시글 #{postId}의 내용입니다.</p>
+            <h1>댓글 컴포넌트 사용 예시</h1>
 
-            <hr />
-
-            {/* postId를 prop으로 넘김 */}
+            {/* 댓글 컴포넌트 : postId를 prop으로 넘김 */}
             <CommentSection postId={postId} />
         </div>
     );

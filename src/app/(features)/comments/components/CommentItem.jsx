@@ -1,25 +1,42 @@
 import styles from './comment-item.css';
 
 export default function ({ item }) {
+    const isLiked = true;
+    const isUnliked = true;
+
     return (
         <div className='item-container'>
             {/* item header */}
             <div className='item-header'>
+                {/* user info */}
                 <div className='item-left'>
                     <span className='course'>{item.author.course}</span>
                     <span className='name'>{item.author.name}</span>
                     <span className='date'>{item.createdAt}</span>
                 </div>
                 <div className='item-right'>
+                    {/* like */}
                     <div className='reaction'>
-                        <span className='icon'>❤️</span>
-                        <span className='like-count'>200</span>
+                        <img
+                            src={`/images/comments/${isLiked ? 'like-on.png' : 'like-off.png'}`}
+                            alt='like icon'
+                            className='icon'
+                        />
+                        <span className='like-count'>{item.likeCount}</span>
                     </div>
+                    {/* unlike */}
                     <div className='reaction'>
-                        <span className='icon'>💔</span>
-                        <span className='dislike-count'>1</span>
+                        <img
+                            src={`/images/comments/${isUnliked ? 'unlike-on.png' : 'unlike-off.png'}`}
+                            alt='unlike icon'
+                            className='icon'
+                        />
+                        <span className='unlike-count'>{item.unlikeCount}</span>
                     </div>
-                    <div className='menu-icon'>☰</div>
+                    {/* menu */}
+                    <div className='menu'>
+                        <img src={`/images/comments/menu.png`} alt='menu icon' className='icon' />
+                    </div>
                 </div>
             </div>
 
