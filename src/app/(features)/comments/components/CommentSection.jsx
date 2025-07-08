@@ -24,8 +24,8 @@ export default function CommentSection({ postId }) {
         likeCount: 0,
         unlikeCount: 0,
         myReaction: 'NONE',
-        createdAt: '2025-07-03T11:38:50.078694',
-        updatedAt: '2025-07-03T11:38:50.078694',
+        createdAt: '2025.07.03. 11:38',
+        updatedAt: '2025.07.03. 11:38',
     };
     const commentCount = 3;
 
