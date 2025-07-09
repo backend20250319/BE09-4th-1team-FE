@@ -1,6 +1,14 @@
 'use client';
 
+import Header from '../components/Header';
+import { usePathname } from 'next/navigation';
+
 export default function RootLayout({ children }) {
+    const pathname = usePathname();
+
+    const hideHeaderPages = ['/login', '/register']; // 헤더 제외하고 싶은 페이지
+    const showHeader = !hideHeaderPages.includes(pathname);
+
     return (
         <html lang='ko'>
             <head>
@@ -15,7 +23,8 @@ export default function RootLayout({ children }) {
                     boxSizing: 'border-box',
                 }}
             >
-                <main className='main'>{children}</main>
+                {showHeader && <Header />}
+                <main>{children}</main>
             </body>
         </html>
     );
