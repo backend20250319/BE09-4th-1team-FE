@@ -1,0 +1,78 @@
+.header-container {
+    display: flex;
+    padding: 18px 24px;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+}
+
+.logo {
+    width: 132.999px;
+    height: 24px;
+}
+
+.menu-bar {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+}
+
+.menu-bar a {
+    color: #000;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.menu-bar a:visited {
+    color: #000; /* 방문 후 보라색 제거 */
+}
+
+.menu-bar a:hover {
+    color: #000; /* 호버 시 색상 고정 */
+    text-decoration: none; /* 호버 시 밑줄 제거 */
+}
+
+.menu-bar a:active {
+    color: #000; /* 클릭 시 색상 고정 */
+}
+
+.user-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    aspect-ratio: 1/1;
+}
+
+.username {
+    padding: 0px 6px;
+    color: #000;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; /* 200% */
+}
+
+.logout {
+    padding: 0px 6px;
+    color: var(--PlayData-Gray, #3fb9af);
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 240% */
+}
+
+.logout {
+    cursor: 'pointer';
+}
