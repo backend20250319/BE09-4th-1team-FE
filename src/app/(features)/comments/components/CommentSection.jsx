@@ -10,11 +10,24 @@ export default function CommentSection({ postId }) {
     // 댓글 목록
     const [comments, setComments] = useState([]);
 
+    // 총 댓글 수
+    const [totalCount, setTotalCount] = useState(0);
+
     // 페이지네이션
     const [page, setPage] = useState(0);
     const [size] = useState(3);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
+
+    // 댓글 수 불러오기
+    const loadCommentCount = async () => {
+        try {
+            const res = await commentApi.getCommentCount(postId);
+            setTotalCount(res.data.count);
+        } catch (error) {
+            console.error('댓글 수 불러오기 실패', error);
+        }
+    };
 
     // 댓글 목록 불러오기
     const loadComments = async (pageToLoad) => {
@@ -35,6 +48,7 @@ export default function CommentSection({ postId }) {
     // 첫 렌더링 시 0페이지 댓글 불러오기
     useEffect(() => {
         loadComments(0);
+        loadCommentCount();
     }, [postId]);
 
     // 댓글 수정 시 상태 업데이트
@@ -47,6 +61,7 @@ export default function CommentSection({ postId }) {
     // 댓글 삭제 시 상태 업데이트
     const handleDeleteComment = (deletedCommentId) => {
         setComments((prev) => prev.filter((comment) => comment.commentId !== deletedCommentId));
+        loadCommentCount(); // 댓글 수 갱신
     };
 
     // 더 보기 버튼 클릭
@@ -62,7 +77,7 @@ export default function CommentSection({ postId }) {
                 <div className='comment-header'>
                     <img src='/images/comments/comment.png' alt='comment icon' className='comment-icon' />
                     <span className='comment-count'>
-                        Comments : <span className='count-number'>{comments.length}</span>
+                        Comments : <span className='count-number'>{totalCount}</span>
                     </span>
                 </div>
 
@@ -89,6 +104,7 @@ export default function CommentSection({ postId }) {
                     postId={postId}
                     onCommentAdded={(newComment) => {
                         setComments((prev) => [newComment, ...prev]);
+                        loadCommentCount(); // 댓글 수 갱신
                     }}
                 />
             </div>

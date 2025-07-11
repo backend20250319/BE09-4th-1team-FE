@@ -35,3 +35,9 @@ export const updateReaction = async (commentId, reactionStatus) => {
     });
     return response.data;
 };
+
+// 댓글 총 개수 조회
+export const getCommentCount = async (postId) => {
+    const response = await axios.get(`${BASE_URL}/posts/${postId}/count`);
+    return response.data;
+};
