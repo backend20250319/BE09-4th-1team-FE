@@ -1,0 +1,129 @@
+/* styles/ContentSection.module.css */
+.contentContainer {
+  padding: 0 20px 20px 20px;
+  max-width: 800px; /* Adjust as needed */
+  margin: 0 auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+.metaInfo {
+  font-size: 0.9em;
+  color: #666;
+  display: flex;
+  /* flex-direction: column; 세로 방향으로 아이템 배치 */
+  align-items: center; /* 가로 방향으로 가운데 정렬 */
+  justify-content: center; /* 세로 방향으로 가운데 정렬 (선택 사항) */
+  gap: 15px;
+}
+
+.metaInfo span {
+  margin-right: 15px;
+}
+
+.category {
+  font-weight: bold;
+  color: #8876d9; /* Example color */
+}
+
+.author {
+  font-weight: bold;
+}
+
+.date {
+  color: #3fb9af;
+}
+
+.is-answered-container {
+  padding-top: 30;
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  justify-content: center;
+}
+
+.is-answered {
+  display: flex; /* Flex 컨테이너로 설정 */
+  align-items: center; /* 세로 방향으로 가운데 정렬 */
+  justify-content: center;
+  padding: 8px 15px;
+  border: 1.5px solid #8876d9;
+  border-radius: 10px;
+  background-color: #ffffff;
+  font-weight: bold;
+  width: 100px;
+  height: 10px;
+  color: #8876d9;
+}
+
+.answer-content {
+  display: none;
+}
+
+.completionButton:hover {
+  background-color: #e0e0e0;
+}
+
+.mainContent p {
+  margin-bottom: 1em;
+}
+
+.mainContent ol {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding-left: 20px;
+}
+
+.mainContent li {
+  margin-bottom: 0.5em;
+}
+
+.mainContent ul {
+  list-style-type: disc;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  padding-left: 20px;
+}
+
+.listItemTitle {
+  color: #0056b3; /* Darker blue for emphasis */
+}
+
+.feedbackActions {
+  display: flex;
+  justify-content: flex-end; /* Aligns buttons to the right */
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.actionButton {
+  background: none;
+  border: 1px solid #ccc;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  margin-left: 10px; /* Spacing between buttons */
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.actionButton:hover {
+  background-color: #f0f0f0;
+}
+
+.actionButton.liked {
+  background-color: #ffebee;
+  border-color: #ef9a9a;
+  color: #e53935;
+}
+
+.actionButton.disliked {
+  background-color: #e3f2fd;
+  border-color: #90caf9;
+  color: #2196f3;
+}
