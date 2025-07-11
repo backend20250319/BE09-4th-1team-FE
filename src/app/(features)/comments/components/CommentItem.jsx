@@ -6,6 +6,10 @@ import CommentForm from './CommentForm';
 import styles from './comment-item.css';
 
 export default function CommentItem({ item, onUpdate, onDelete }) {
+    // test id
+    const currentUserId = 1;
+    const isMyComment = item.author.userId === currentUserId;
+
     const [reaction, setReaction] = useState(item.myReaction); // 'LIKE' | 'UNLIKE' | 'NONE'
     const [likeCount, setLikeCount] = useState(item.likeCount);
     const [unlikeCount, setUnlikeCount] = useState(item.unlikeCount);
@@ -50,7 +54,6 @@ export default function CommentItem({ item, onUpdate, onDelete }) {
             if (onDelete) onDelete(item.commentId);
         } catch (error) {
             console.error('삭제 실패:', error);
-            alert('삭제에 실패했습니다.');
         }
     };
 
@@ -82,9 +85,9 @@ export default function CommentItem({ item, onUpdate, onDelete }) {
             <div className='item-header'>
                 {/* user info */}
                 <div className='item-left'>
-                    <span className='course'>{item.author.course}</span>
+                    <span className='course'>{item.author.role === 'MANAGER' ? '매니저' : item.author.course}</span>
                     <span className='name'>{item.author.name}</span>
-                    <span className='date'>{item.createdAt}</span>
+                    <span className='date'>{formatDateTime(item.createdAt)}</span>
                 </div>
                 <div className='item-right'>
                     {/* like */}
@@ -107,13 +110,15 @@ export default function CommentItem({ item, onUpdate, onDelete }) {
                         <span className='unlike-count'>{unlikeCount}</span>
                     </div>
 
-                    {/* menu */}
-                    <div className='menu' onClick={toggleMenu}>
-                        <img src={`/images/comments/menu.png`} alt='menu icon' className='icon' />
-                    </div>
+                    {/* 내가 쓴 댓글일 때만 메뉴 버튼 노출 */}
+                    {isMyComment && (
+                        <div className='menu' onClick={toggleMenu}>
+                            <img src={`/images/comments/menu.png`} alt='menu icon' className='icon' />
+                        </div>
+                    )}
 
                     {/* 메뉴 드롭다운 */}
-                    {menuOpen && (
+                    {menuOpen && isMyComment && (
                         <div className='menu-dropdown'>
                             <div className='edit' onClick={onClickEdit}>
                                 수정 <img src='/images/comments/edit.png' alt='수정 아이콘' />
@@ -151,4 +156,15 @@ export default function CommentItem({ item, onUpdate, onDelete }) {
             </div>
         </div>
     );
+}
+
+// ISO 문자열을 "YYYY.MM.DD. HH:mm" 형식으로 변환
+function formatDateTime(isoString) {
+    const date = new Date(isoString);
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const hh = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    return `${yyyy}.${mm}.${dd}. ${hh}:${min}`;
 }
