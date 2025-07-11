@@ -1,0 +1,15 @@
+.title {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  color: black;
+  font-size: 64px;
+  font-weight: 700;
+  padding: 30 0;
+}
+
+.subtitle {
+  text-align: center;
+  padding-bottom: 60;
+}

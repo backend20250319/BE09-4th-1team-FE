@@ -1,0 +1,44 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-title {
+  text-align: center;
+  width: 80%;
+  height: 60px;
+  margin: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+  border: none;
+}
+
+.input-title::placeholder {
+  text-align: center;
+  color: lightgray;
+}
+
+.input-title:focus {
+  outline: none;
+}
+
+.button {
+  cursor: pointer;
+  width: 50%;
+  height: 48px;
+  margin-top: 50px;
+  background-color: #8876d9;
+  border-radius: 10px;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.button:hover {
+  background-color: white;
+  border-color: #8876d9;
+  border: solid;
+  color: #8876d9;
+}
