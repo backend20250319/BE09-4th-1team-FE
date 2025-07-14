@@ -67,32 +67,32 @@ const TuiEditor = () => {
   };
 
   // 이미지 업로드 핸들러
-  const handleImageUpload = async (blob, callback) => {
-    // 1. FormData 생성 (이미지 파일을 담기 위함)
-    const formData = new FormData();
-    formData.append("image", blob); // 'image'는 서버에서 이미지를 받을 필드 이름입니다.
+  // const handleImageUpload = async (blob, callback) => {
+  //   // 1. FormData 생성 (이미지 파일을 담기 위함)
+  //   const formData = new FormData();
+  //   formData.append("image", blob); // 'image'는 서버에서 이미지를 받을 필드 이름입니다.
 
-    try {
-      // 2. 서버에 이미지 업로드 요청 (실제 API 엔드포인트로 변경하세요)
-      const response = await fetch("/api/upload-image", {
-        method: "POST",
-        body: formData,
-      });
+  //   try {
+  //     // 2. 서버에 이미지 업로드 요청 (실제 API 엔드포인트로 변경하세요)
+  //     const response = await fetch("/api/upload-image", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
 
-      if (!response.ok) {
-        throw new Error("이미지 업로드 실패");
-      }
+  //     if (!response.ok) {
+  //       throw new Error("이미지 업로드 실패");
+  //     }
 
-      const data = await response.json();
-      // 3. 서버에서 받은 이미지 URL로 에디터에 이미지 삽입
-      // data.imageUrl는 서버에서 반환하는 이미지 URL 필드 이름이어야 합니다.
-      callback(data.imageUrl, "alt text"); // 두 번째 인자는 대체 텍스트입니다.
-    } catch (error) {
-      console.error("이미지 업로드 오류:", error);
-      alert("이미지 업로드에 실패했습니다.");
-    }
-    return false; // Toast UI Editor의 기본 이미지 업로드 동작을 막습니다.
-  };
+  //     const data = await response.json();
+  //     // 3. 서버에서 받은 이미지 URL로 에디터에 이미지 삽입
+  //     // data.imageUrl는 서버에서 반환하는 이미지 URL 필드 이름이어야 합니다.
+  //     callback(data.imageUrl, "alt text"); // 두 번째 인자는 대체 텍스트입니다.
+  //   } catch (error) {
+  //     console.error("이미지 업로드 오류:", error);
+  //     alert("이미지 업로드에 실패했습니다.");
+  //   }
+  //   return false; // Toast UI Editor의 기본 이미지 업로드 동작을 막습니다.
+  // };
 
   return (
     <div className={styles.form}>
