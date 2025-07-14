@@ -9,6 +9,8 @@ import ContentSection from "./components/ContentSection";
 import CommentSection from "../../comments/components/CommentSection";
 import dynamic from "next/dynamic";
 import "@toast-ui/editor/dist/toastui-editor.css";
+import { Viewer } from "@toast-ui/react-editor";
+
 
 // TuiEditor를 동적으로 import
 const Editor = dynamic(
@@ -173,12 +175,12 @@ const page = () => {
           {answerData.title && (
             <div style={{ fontWeight: "bold", fontSize: "18px", marginBottom: "10px" }}>{answerData.title}</div>
           )}
-          <div style={{ 
-            lineHeight: "1.6",
-            fontSize: "16px"
-          }}>
-            {answerData.content}
-          </div>
+          
+            <Viewer
+              width="80%"
+              initialValue={answerData.content}
+            />
+    
           <div style={{ 
             marginTop: "15px",
             display: "flex",
