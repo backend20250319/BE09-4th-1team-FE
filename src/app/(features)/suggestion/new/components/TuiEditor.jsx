@@ -66,9 +66,9 @@ const TuiEditor = () => {
     }
   };
 
-  // TODO
+  //
   // 이미지 업로드 핸들러
-  // const handleImageUpload = async (blob, callback) => {
+  const handleImageUpload = async (blob, callback) => {
   //   // 1. FormData 생성 (이미지 파일을 담기 위함)
   //   const formData = new FormData();
   //   formData.append("image", blob); // 'image'는 서버에서 이미지를 받을 필드 이름입니다.
@@ -92,8 +92,8 @@ const TuiEditor = () => {
   //     console.error("이미지 업로드 오류:", error);
   //     alert("이미지 업로드에 실패했습니다.");
   //   }
-  //   return false; // Toast UI Editor의 기본 이미지 업로드 동작을 막습니다.
-  // };
+    return false; // Toast UI Editor의 기본 이미지 업로드 동작을 막습니다.
+  };
 
   return (
     <div className={styles.form}>
