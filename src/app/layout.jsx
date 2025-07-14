@@ -2,12 +2,15 @@
 
 import Header from '../components/Header';
 import { usePathname } from 'next/navigation';
+import Footer from '../components/common/Footer'
 
 export default function RootLayout({ children }) {
     const pathname = usePathname();
 
     const hideHeaderPages = ['/login', '/register']; // 헤더 제외하고 싶은 페이지
+    const hideFooterPages = ['/login', '/mypage'];
     const showHeader = !hideHeaderPages.includes(pathname);
+    const showFooter = !hideFooterPages.includes(pathname); 
 
     return (
         <html lang='ko'>
@@ -25,6 +28,8 @@ export default function RootLayout({ children }) {
             >
                 {showHeader && <Header />}
                 <main>{children}</main>
+                {showFooter && <Footer />}
+                
             </body>
         </html>
     );
