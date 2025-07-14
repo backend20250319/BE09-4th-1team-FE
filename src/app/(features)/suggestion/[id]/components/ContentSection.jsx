@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styles from "../styles/ContentSection.module.css";
 
 const ContentSection = ({
-  userName,
+  userName="비니",
   createdAt,
   isAnswered,
   content,
@@ -67,7 +67,7 @@ const ContentSection = ({
           className={`${styles.actionButton} ${hasLiked ? styles.liked : ""}`}
           onClick={handleLike}
         >
-          ❤️ {likes}
+          👍 {likes}
         </button>
         <button
           className={`${styles.actionButton} ${
@@ -75,7 +75,7 @@ const ContentSection = ({
           }`}
           onClick={handleDislike}
         >
-          🖤 {dislikes}
+          👎 {dislikes}
         </button>
       </div>
     </div>
