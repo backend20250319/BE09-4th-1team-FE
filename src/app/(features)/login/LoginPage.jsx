@@ -5,11 +5,11 @@ import styles from "./style.module.css";
 import Image from "next/image";
 import { LoginButtons } from "./LoginButtons";
 
-const FindIdPwButton = ({ onClick }) => (
-  <button className={styles["find-idpw-button"]} type="button" onClick={onClick}>
-    Find ID/PW
-  </button>
-);
+// const FindIdPwButton = ({ onClick }) => (
+//   <button className={styles["find-idpw-button"]} type="button" onClick={onClick}>
+//     Find ID/PW
+//   </button>
+// );
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -122,9 +122,9 @@ const LoginPage = () => {
 
             <div className={styles["login-button"]}>
               <LoginButtons username={username} password={password} />
-              <div className={styles["invalid-password-wrapper"]}>
+              {/* <div className={styles["invalid-password-wrapper"]}>
                 <FindIdPwButton />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
