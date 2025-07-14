@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import styles from "../styles/ContentSection.module.css";
+import { Viewer } from "@toast-ui/react-editor";
 
 const ContentSection = ({
   userName="비니",
@@ -60,7 +61,10 @@ const ContentSection = ({
         </div>
       </div>
 
-      <div>{content}</div>
+      <Viewer
+        width="80%"
+        initialValue={content}
+      />
 
       <div className={styles.feedbackActions}>
         <button
