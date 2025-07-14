@@ -3,7 +3,10 @@
 import "@toast-ui/editor/dist/toastui-editor.css";
 import styles from "@/app/(features)/suggestion/new/styles/newSuggestion.module.css";
 import dynamic from "next/dynamic";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { createSuggestionPost } from "../../util/PostServiceApi";
+import { useRouter } from "next/navigation";
+
 const Editor = dynamic(
   () => import("@toast-ui/react-editor").then((mod) => mod.Editor),
   { ssr: false }
@@ -12,31 +15,54 @@ const Editor = dynamic(
 const TuiEditor = () => {
   // 1. Editor 컴포넌트 인스턴스에 접근하기 위한 Ref 생성
   const editorRef = useRef(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (editorRef.current) {
-      // TODO 여기서 POST 로직
+      try {
+        setIsSubmitting(true);
+        
+        const editorInstance = editorRef.current.getInstance();
+        const markdownContent = editorInstance.getMarkdown();
+        console.log("마크다운 내용:", markdownContent);
 
-      const editorInstance = editorRef.current.getInstance();
-      const markdownContent = editorInstance.getMarkdown();
-      console.log("마크다운 내용:", markdownContent);
+        // 예시: 제목 가져오기 (input 필드에 ref를 추가하여 가져오는 것이 더 정확합니다)
+        const titleInput = document.querySelector(`.${styles["input-title"]}`);
+        const title = titleInput ? titleInput.value : "";
+        console.log("제목:", title);
 
-      // 예시: 제목 가져오기 (input 필드에 ref를 추가하여 가져오는 것이 더 정확합니다)
-      const titleInput = document.querySelector(`.${styles["input-title"]}`);
-      const title = titleInput ? titleInput.value : "";
-      console.log("제목:", title);
+        if (!title.trim()) {
+          alert("제목을 입력해주세요.");
+          return;
+        }
 
-      // 실제 백엔드 POST 요청 로직을 여기에 구현
-      // fetch('/api/suggestions', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ title, content: markdownContent }),
-      // })
-      // .then(response => response.json())
-      // .then(data => console.log('성공:', data))
-      // .catch((error) => console.error('에러:', error));
+        if (!markdownContent.trim()) {
+          alert("내용을 입력해주세요.");
+          return;
+        }
+
+        // PostServiceApi를 사용한 실제 백엔드 POST 요청
+        const postData = {
+          title: title,
+          content: markdownContent,
+          // userId는 실제 인증 시스템에서 가져와야 합니다
+          userId: 1 // 임시로 1로 설정
+        };
+
+        const response = await createSuggestionPost(postData);
+        console.log('게시글 생성 성공:', response);
+        
+        // 성공 후 게시글 목록 페이지로 이동
+        alert("게시글이 성공적으로 생성되었습니다!");
+        router.push('/suggestion');
+        
+      } catch (error) {
+        console.error('게시글 생성 에러:', error);
+        alert("게시글 생성에 실패했습니다. 다시 시도해주세요.");
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -96,8 +122,9 @@ const TuiEditor = () => {
           <input
             className={styles.button}
             type="button"
-            value="Submit"
+            value={isSubmitting ? "생성 중..." : "Submit"}
             onClick={handleSubmit}
+            disabled={isSubmitting}
             style={{}}
           />
         </div>
