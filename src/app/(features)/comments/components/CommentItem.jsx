@@ -7,8 +7,8 @@ import styles from './comment-item.css';
 
 export default function CommentItem({ item, onUpdate, onDelete }) {
     // test id
-    const currentUserId = 1;
-    const isMyComment = item.author.userId === currentUserId;
+    const currentUserId = 2;
+    const isMyComment = item.author.id === currentUserId;
 
     const [reaction, setReaction] = useState(item.myReaction); // 'LIKE' | 'UNLIKE' | 'NONE'
     const [likeCount, setLikeCount] = useState(item.likeCount);
