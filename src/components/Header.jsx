@@ -2,22 +2,39 @@
 
 import styles from "./header.css";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
 import Link from "next/link";
 
 export default function Header() {
-  // TODO : 나중에 실제 데이터로 변경
-  const userName = "이정아";
-  // ----
-
+  const [userName, setUserName] = useState("");
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const accessToken = localStorage.getItem("accessToken");
+      if (!accessToken) return;
+
+      try {
+        const response = await fetch("http://localhost:8000/api/v1/user-service/users/me", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setUserName(data.name); // 이름만 저장
+        }
+      } catch (e) {
+        // 에러 처리
+      }
+    };
+    fetchUserName();
+  }, []);
+
   const handleLogout = () => {
-    // ✅ 세션/스토리지 클리어
     localStorage.clear();
     sessionStorage.clear();
-
-    // 로그인 이동
     router.replace("/login");
   };
 
