@@ -5,10 +5,9 @@ import * as commentApi from '../api'; // API 함수 import
 import CommentForm from './CommentForm';
 import styles from './comment-item.css';
 
-export default function CommentItem({ item, onUpdate, onDelete }) {
-    // test id
-    const currentUserId = 2;
-    const isMyComment = item.author.id === currentUserId;
+export default function CommentItem({ user, item, onUpdate, onDelete }) {
+    // 내 댓글 여부
+    const isMyComment = item.author.id === user.id;
 
     const [reaction, setReaction] = useState(item.myReaction); // 'LIKE' | 'UNLIKE' | 'NONE'
     const [likeCount, setLikeCount] = useState(item.likeCount);

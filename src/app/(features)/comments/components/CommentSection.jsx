@@ -7,6 +7,9 @@ import CommentForm from './CommentForm';
 import styles from './comment-section.css';
 
 export default function CommentSection({ postId }) {
+    // 로그인한 유저
+    const [user, setUser] = useState(null);
+
     // 댓글 목록
     const [comments, setComments] = useState([]);
 
@@ -47,14 +50,15 @@ export default function CommentSection({ postId }) {
 
     // 첫 렌더링 시 0페이지 댓글 불러오기
     useEffect(() => {
-        // TODO 임시 토큰
-        localStorage.setItem(
-            'accessToken',
-            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMTIzIiwidXNlcklkIjoyLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc1MjQ4MTM2MywiZXhwIjoxNzUyNDgyMjYzfQ.TTGYFCvX8mCDI_qBD5uCp2i0SwkokpLdR-hFnAPQ1SvUz6NJoE-o6syFXlxdGFoM7z-X6fqwzgjAEEjakw7-Xg'
-        );
-
         loadComments(0);
         loadCommentCount();
+
+        const username = localStorage.getItem('name');
+        const userRole = localStorage.getItem('userRole');
+        let userCourse = localStorage.getItem('userCourse');
+        userCourse = userRole === 'MANAGER' ? '매니저' : userCourse;
+        const userId = Number(localStorage.getItem('userId'));
+        setUser({ id: userId, name: username, role: userRole, course: userCourse });
     }, [postId]);
 
     // 댓글 수정 시 상태 업데이트
@@ -88,14 +92,16 @@ export default function CommentSection({ postId }) {
                 </div>
 
                 {/* 댓글 리스트 */}
-                {comments.map((item) => (
-                    <CommentItem
-                        key={item.commentId}
-                        item={item}
-                        onUpdate={handleUpdateComment}
-                        onDelete={handleDeleteComment}
-                    />
-                ))}
+                {user &&
+                    comments.map((item) => (
+                        <CommentItem
+                            key={item.commentId}
+                            user={user}
+                            item={item}
+                            onUpdate={handleUpdateComment}
+                            onDelete={handleDeleteComment}
+                        />
+                    ))}
 
                 {/* 더 보기 버튼 */}
                 {hasMore && (
@@ -105,14 +111,16 @@ export default function CommentSection({ postId }) {
                 )}
 
                 {/* 댓글 작성 폼 */}
-                <CommentForm
-                    user={{ userId: 2, course: '백엔드 8기', name: '이정정' }}
-                    postId={postId}
-                    onCommentAdded={(newComment) => {
-                        setComments((prev) => [newComment, ...prev]);
-                        loadCommentCount(); // 댓글 수 갱신
-                    }}
-                />
+                {user && (
+                    <CommentForm
+                        user={user}
+                        postId={postId}
+                        onCommentAdded={(newComment) => {
+                            setComments((prev) => [newComment, ...prev]);
+                            loadCommentCount();
+                        }}
+                    />
+                )}
             </div>
         </div>
     );

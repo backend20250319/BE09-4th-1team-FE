@@ -15,7 +15,6 @@ export default function CommentForm({ user, postId, onCommentAdded }) {
 
         const commentCreateRequest = {
             postId,
-            userId: user.userId,
             content: text,
         };
 
