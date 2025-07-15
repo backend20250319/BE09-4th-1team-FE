@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import ManagerSelection from "./components/ManagerSelection";
 import CalendarComponent from "./components/CalendarComponent";
 import TimeSelection from "./components/TimeSelection";
+import consultingApi from "./api";
+
 import "./consulting.css";
 
 const DUMMY_MANAGERS = [
@@ -102,15 +104,45 @@ export default function ReservationPage() {
     setShowModal(true);
   };
 
-  const handleModalConfirm = () => {
-    setSelectedManager(DUMMY_MANAGERS[0]);
-    setSelectedDate(null);
-    setSelectedTime(null);
-    setShowTimeSelection(false);
-    setShowModal(false);
-    setTempState(null);
+  const handleModalConfirm = async () => {
+    console.log("test 11");
+    const userId = 1;
+    const managerId = selectedManager.id;
+    console.log("mangerId", managerId);
+    const formattedDate = selectedDate.toISOString().split("T")[0];
+
+    // 2. 시간 포맷: "1600-1700" → "16:00:00"
+    const startTimeRaw = selectedTime.split("-")[0]; // "1600"
+    const formattedTime = `${startTimeRaw.slice(0, 2)}:${startTimeRaw.slice(
+      2
+    )}:00`; // "16:00:00"
+
+    // 3. ISO 날짜시간 조합: "2025-07-01T16:00:00"
+    const localDateTime = `${formattedDate}T${formattedTime}`;
+    const consultationDetailsDto = {
+      userId: String(userId),
+      managerId: String(managerId),
+      localDateTime: localDateTime,
+    };
+    console.log("consultationDetailsDto", consultationDetailsDto);
+
+    try {
+      const res = await consultingApi.createConsultingReservation(
+        consultationDetailsDto
+      );
+      console.log("예약 성공:", res);
+    } catch (error) {
+      console.error("예약 실패:", error);
+    }
+    //   setSelectedManager(DUMMY_MANAGERS[0]);
+    //   setSelectedDate(null);
+    //   setSelectedTime(null);
+    //   setShowTimeSelection(false);
+    //   setShowModal(false);
+    //   setTempState(null);
   };
 
+  //
   const handleModalCancel = () => {
     if (tempState) {
       setSelectedManager(tempState.manager);
