@@ -105,26 +105,28 @@ export default function ReservationPage() {
   };
 
   const handleModalConfirm = async () => {
-    console.log("test 11");
     const userId = 1;
     const managerId = selectedManager.id;
-    console.log("mangerId", managerId);
-    const formattedDate = selectedDate.toISOString().split("T")[0];
 
-    // 2. 시간 포맷: "1600-1700" → "16:00:00"
-    const startTimeRaw = selectedTime.split("-")[0]; // "1600"
+    // 날짜를 로컬 기준으로 포맷
+    const year = selectedDate.getFullYear();
+    const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
+    const day = String(selectedDate.getDate()).padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}`;
+
+    // 시간 포맷
+    const startTimeRaw = selectedTime.split("-")[0];
     const formattedTime = `${startTimeRaw.slice(0, 2)}:${startTimeRaw.slice(
       2
-    )}:00`; // "16:00:00"
+    )}:00`;
 
-    // 3. ISO 날짜시간 조합: "2025-07-01T16:00:00"
+    // ISO 날짜시간 조합
     const localDateTime = `${formattedDate}T${formattedTime}`;
     const consultationDetailsDto = {
       userId: String(userId),
       managerId: String(managerId),
       localDateTime: localDateTime,
     };
-    console.log("consultationDetailsDto", consultationDetailsDto);
 
     try {
       const res = await consultingApi.createConsultingReservation(
@@ -134,12 +136,6 @@ export default function ReservationPage() {
     } catch (error) {
       console.error("예약 실패:", error);
     }
-    //   setSelectedManager(DUMMY_MANAGERS[0]);
-    //   setSelectedDate(null);
-    //   setSelectedTime(null);
-    //   setShowTimeSelection(false);
-    //   setShowModal(false);
-    //   setTempState(null);
   };
 
   //
