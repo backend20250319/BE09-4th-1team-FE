@@ -5,19 +5,19 @@ import "./TimeSelection.css";
 
 const DUMMY_TIME_SLOTS = {
   morning: [
-    { label: "09:00 - 10:30", value: "0900-1030", available: true },
-    { label: "10:30 - 11:30", value: "1030-1130", available: true },
-    { label: "11:30 - 12:30", value: "1130-1230", available: false },
+    { label: "09:00 - 10:00", value: "0900-1000", available: true },
+    { label: "10:00 - 11:00", value: "1000-1100", available: true },
+    { label: "11:00 - 12:00", value: "1100-1200", available: false },
   ],
   afternoon: [
-    { label: "12:30 - 13:00", value: "1230-1300", available: true },
+    { label: "12:00 - 13:00", value: "1200-1300", available: true },
     { label: "13:00 - 14:00", value: "1300-1400", available: true },
     { label: "14:00 - 15:00", value: "1500-1600", available: true },
-    { label: "15:30 - 16:00", value: "1530-1600", available: false },
-    { label: "16:30 - 17:00", value: "1630-1700", available: true },
-    { label: "17:30 - 18:00", value: "1730-1800", available: true },
-    { label: "18:00 - 18:30", value: "1800-1830", available: true },
-    { label: "19:00 - 19:30", value: "1900-1930", available: true },
+    { label: "16:00 - 17:00", value: "1600-1700", available: false },
+    { label: "17:00 - 18:00", value: "1700-1800", available: true },
+    { label: "18:00 - 19:00", value: "1800-1900", available: true },
+    { label: "19:00 - 20:00", value: "1900-2000", available: true },
+    { label: "20:00 - 21:00", value: "2000-2100", available: true },
   ],
 };
 
