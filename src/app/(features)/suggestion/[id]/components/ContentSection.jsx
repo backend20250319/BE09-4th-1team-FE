@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import styles from "../styles/ContentSection.module.css";
+import { Viewer } from "@toast-ui/react-editor";
 
 const ContentSection = ({
-  userName,
+  userName="비니",
   createdAt,
   isAnswered,
   content,
@@ -60,14 +61,17 @@ const ContentSection = ({
         </div>
       </div>
 
-      <div>{content}</div>
+      <Viewer
+        width="80%"
+        initialValue={content}
+      />
 
       <div className={styles.feedbackActions}>
         <button
           className={`${styles.actionButton} ${hasLiked ? styles.liked : ""}`}
           onClick={handleLike}
         >
-          ❤️ {likes}
+          👍 {likes}
         </button>
         <button
           className={`${styles.actionButton} ${
@@ -75,7 +79,7 @@ const ContentSection = ({
           }`}
           onClick={handleDislike}
         >
-          🖤 {dislikes}
+          👎 {dislikes}
         </button>
       </div>
     </div>
