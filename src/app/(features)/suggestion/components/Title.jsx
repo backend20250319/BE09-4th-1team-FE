@@ -1,4 +1,4 @@
-import styles from "@/app/(features)/suggestion/styles/Title.module.css";
+import styles from "../styles/Title.module.css";
 import React from "react";
 
 const Title = (props) => {

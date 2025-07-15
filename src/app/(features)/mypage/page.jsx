@@ -1,12 +1,12 @@
 'use client';
 
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import styles from './style.profile.module.css';
 import ReservationCard from '../reservation/components/ReservationCard';
 import reservationStyles from '../reservation/page.module.css';
 import ManageStudentsPage from '../manage-students/page';
 import ManageReservationPage from '../manage-reservation/page';
+import axios from 'axios';
 
 export default function MyPage() {
   const [activeTab, setActiveTab] = useState('profile');
@@ -14,24 +14,25 @@ export default function MyPage() {
   const [profileImage, setProfileImage] = useState(null);
   const [profilePreview, setProfilePreview] = useState(null);
 
+  const getUserInfo = async () => {
+    const accessToken =  localStorage.getItem("accessToken"); // or sessionStorage, Recoil, Zustand 등
+
+    const response = await axios.get("http://localhost:8000/api/v1/user-service/users/me", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    console.log("response data", response.data);
+    setUserInfo(response.data);
+    console.log("userInfo : ", userInfo);
+  }
+
+
   // 🔹 로그인 사용자 정보 불러오기
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      const accessToken = localStorage.getItem("accessToken");
-      try {
-        const response = await axios.get("/api/v1/user-service/users/me", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          withCredentials: true,
-        });
-        setUserInfo(response.data);
-      } catch (err) {
-        console.error("유저 정보 불러오기 실패:", err);
-        setUserInfo(null);
-      }
-    };
-    fetchUserInfo();
+    getUserInfo();
+    
   }, []);
 
   const handleProfileImageChange = (e) => {
@@ -44,7 +45,7 @@ export default function MyPage() {
 
   const renderContent = () => {
     if (!userInfo) return <p>Loading...</p>;
-    const userRole = userInfo.role;
+    const userRole = userInfo?.role;
 
     switch (activeTab) {
       case 'profile':
@@ -74,11 +75,11 @@ export default function MyPage() {
 
             <h2 className={styles.title}>프로필</h2>
             <div className={styles.profileTable}>
-              <div className={styles.row}><span className={styles.label}>ID:</span><span className={styles.value}>{userInfo.id}</span></div>
-              <div className={styles.row}><span className={styles.label}>Name:</span><span className={styles.value}>{userInfo.name}</span></div>
-              <div className={styles.row}><span className={styles.label}>Email:</span><span className={styles.value}>{userInfo.email}</span></div>
-              <div className={styles.row}><span className={styles.label}>Role:</span><span className={styles.value}>{userInfo.role}</span></div>
-              <div className={styles.row}><span className={styles.label}>Course:</span><span className={styles.value}>{userInfo.course}</span></div>
+              <div className={styles.row}><span className={styles.label}>ID:</span><span className={styles.value}>{userInfo?.id}</span></div>
+              <div className={styles.row}><span className={styles.label}>Name:</span><span className={styles.value}>{userInfo?.name}</span></div>
+              <div className={styles.row}><span className={styles.label}>Email:</span><span className={styles.value}>{userInfo?.email}</span></div>
+              <div className={styles.row}><span className={styles.label}>Role:</span><span className={styles.value}>{userInfo?.role}</span></div>
+              <div className={styles.row}><span className={styles.label}>Course:</span><span className={styles.value}>{userInfo?.course}</span></div>
 
               <div className={styles.button}>
                 <button className={styles.positiveButton}>비밀번호 변경</button>
@@ -143,9 +144,9 @@ export default function MyPage() {
         }
 
       case 'student':
-        return <ManageStudentsPage />;
+        return userInfo?.role === 'MANAGER' ? <ManageStudentsPage /> : null;
       case 'reservation-mgmt':
-        return <ManageReservationPage />;
+        return userInfo?.role === 'MANAGER' ? <ManageReservationPage /> : null;
       default:
         return <p>No tab selected.</p>;
     }
@@ -160,7 +161,7 @@ export default function MyPage() {
             <button className={`${styles.menuButton} ${activeTab === 'profile' ? styles.selected : ''}`} onClick={() => setActiveTab('profile')}>Profile</button>
             <button className={`${styles.menuButton} ${activeTab === 'post' ? styles.selected : ''}`} onClick={() => setActiveTab('post')}>My Post</button>
             <button className={`${styles.menuButton} ${activeTab === 'reservation' ? styles.selected : ''}`} onClick={() => setActiveTab('reservation')}>My Reservation</button>
-            {userInfo.role === 'MANAGER' && (
+            {userInfo?.role === 'MANAGER' && (
               <>
                 <button className={`${styles.menuButton} ${activeTab === 'student' ? styles.selected : ''}`} onClick={() => setActiveTab('student')}>Student Management</button>
                 <button className={`${styles.menuButton} ${activeTab === 'reservation-mgmt' ? styles.selected : ''}`} onClick={() => setActiveTab('reservation-mgmt')}>Reservation Management</button>
