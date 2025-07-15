@@ -47,6 +47,12 @@ export default function CommentSection({ postId }) {
 
     // 첫 렌더링 시 0페이지 댓글 불러오기
     useEffect(() => {
+        // TODO 임시 토큰
+        localStorage.setItem(
+            'accessToken',
+            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMTIzIiwidXNlcklkIjoyLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc1MjQ4MTM2MywiZXhwIjoxNzUyNDgyMjYzfQ.TTGYFCvX8mCDI_qBD5uCp2i0SwkokpLdR-hFnAPQ1SvUz6NJoE-o6syFXlxdGFoM7z-X6fqwzgjAEEjakw7-Xg'
+        );
+
         loadComments(0);
         loadCommentCount();
     }, [postId]);
@@ -100,7 +106,7 @@ export default function CommentSection({ postId }) {
 
                 {/* 댓글 작성 폼 */}
                 <CommentForm
-                    user={{ userId: 1, course: '백엔드 8기', name: '이정정' }}
+                    user={{ userId: 2, course: '백엔드 8기', name: '이정정' }}
                     postId={postId}
                     onCommentAdded={(newComment) => {
                         setComments((prev) => [newComment, ...prev]);
