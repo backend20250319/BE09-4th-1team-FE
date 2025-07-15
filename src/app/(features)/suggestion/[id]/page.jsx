@@ -129,7 +129,13 @@ const page = () => {
   }
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <TitleSection title={postData.title}></TitleSection>
       <ContentSection
         userName={postData.username}
@@ -149,6 +155,7 @@ const page = () => {
             border: "1px solid #28a745",
             borderRadius: "5px",
             backgroundColor: "#f8fff9",
+            width: "80%",
           }}
         >
           <div
@@ -191,7 +198,7 @@ const page = () => {
 
           <Viewer width="80%" initialValue={answerData.content} />
 
-          <div
+          {/* <div
             style={{
               marginTop: "15px",
               display: "flex",
@@ -211,7 +218,7 @@ const page = () => {
                 {answerData.unlikeCount || 0}
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       )}
 

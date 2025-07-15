@@ -4,7 +4,7 @@ import styles from "../styles/ContentSection.module.css";
 import { Viewer } from "@toast-ui/react-editor";
 
 const ContentSection = ({
-  userName="비니",
+  userName = "비니",
   createdAt,
   isAnswered,
   content,
@@ -61,12 +61,9 @@ const ContentSection = ({
         </div>
       </div>
 
-      <Viewer
-        width="80%"
-        initialValue={content}
-      />
+      <Viewer width="80%" initialValue={content} />
 
-      <div className={styles.feedbackActions}>
+      {/* <div className={styles.feedbackActions}>
         <button
           className={`${styles.actionButton} ${hasLiked ? styles.liked : ""}`}
           onClick={handleLike}
@@ -81,7 +78,7 @@ const ContentSection = ({
         >
           👎 {dislikes}
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
