@@ -21,6 +21,7 @@ export const Search = () => {
 
   // 게시글 목록을 가져오는 함수
   const fetchPosts = async (page = 0) => {
+    console.log("get posts", page)
     try {
       setLoading(true);
       setError(null);
