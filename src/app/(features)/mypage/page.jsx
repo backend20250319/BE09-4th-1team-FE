@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import styles from './style.profile.module.css';
 import ReservationCard from '../reservation/components/ReservationCard';
 import reservationStyles from '../reservation/page.module.css';
@@ -15,19 +16,22 @@ export default function MyPage() {
 
   // 🔹 로그인 사용자 정보 불러오기
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/user-service/users/me`, {
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error('Unauthorized');
-        return res.json();
-      })
-      .then((data) => setUserInfo(data))
-      .catch((err) => {
-        console.error(err);
+    const fetchUserInfo = async () => {
+      const accessToken = localStorage.getItem("accessToken");
+      try {
+        const response = await axios.get("/api/v1/user-service/users/me", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          withCredentials: true,
+        });
+        setUserInfo(response.data);
+      } catch (err) {
+        console.error("유저 정보 불러오기 실패:", err);
         setUserInfo(null);
-      });
+      }
+    };
+    fetchUserInfo();
   }, []);
 
   const handleProfileImageChange = (e) => {
