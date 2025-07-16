@@ -14,12 +14,12 @@ export const getConsultationsByManagerId = async (managerId) => {
   return response.data?.results?.consultations || [];
 };
 
-export const updateConsultationStatus = async (sessionId, statusUpdateRequestDto) => {
+export const updateConsultationStatus = async (sessionId, status) => {
   const token = localStorage.getItem("accessToken");
 
   return await axios.patch(
-    `${BASE_URL}/${sessionId}/status`,
-    statusUpdateRequestDto,
+    `http://localhost:8000/api/v1/consulting-service/consulting/${sessionId}/status`,
+    { status },
     {
       headers: {
         Authorization: `Bearer ${token}`,
