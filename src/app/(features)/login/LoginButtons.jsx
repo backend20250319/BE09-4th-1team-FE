@@ -25,7 +25,7 @@ export const LoginButtons = ({ className, username, password }) => {
   withCredentials: true
 });
 
-      // accessToken은 localStorage에 저장
+      // accessToken은 localStora ge에 저장
       console.log(res);
       localStorage.setItem('accessToken', res.data.accessToken);
       
