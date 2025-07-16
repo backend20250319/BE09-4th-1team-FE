@@ -187,13 +187,26 @@
   z-index: 1000;
 }
 
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
 .modalBox {
   background: white;
   border-radius: 16px;
   padding: 30px 40px;
   width: 300px;
   text-align: center;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .modalTitle {
@@ -210,8 +223,8 @@
 .modalButtons {
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
 }
-
 .confirmBtn {
   background-color: #ff4e4e;
   color: white;
@@ -223,13 +236,14 @@
 }
 
 .backBtn {
-  background-color: white;
+  background: white;
   color: #7f56d9;
-  border: 1px solid #7f56d9;
-  border-radius: 20px;
+  border: 1.5px solid #7f56d9;
+  border-radius: 999px;
   padding: 8px 20px;
   font-weight: bold;
   cursor: pointer;
+  min-width: 100px;
 }
 
 /* Textarea */
@@ -293,27 +307,26 @@
   display: flex;
   align-items: center;
 }
-
 .purpleButton {
-  background-color: #726fff;
+  background: #726fff;
   color: white;
-  padding: 8px 16px;
+  padding: 8px 20px;
   border: none;
-  border-radius: 20px;
+  border-radius: 999px;
   font-weight: bold;
-  font-size: 14px;
   cursor: pointer;
+  min-width: 100px;
 }
 
 .redButton {
-  background-color: #ff4e4e;
+  background: #ff4e4e;
   color: white;
-  padding: 8px 16px;
+  padding: 8px 20px;
   border: none;
-  border-radius: 20px;
+  border-radius: 999px;
   font-weight: bold;
-  font-size: 14px;
   cursor: pointer;
+  min-width: 100px;
 }
 /* 1. 과정/이름 */
 .userInfo {
