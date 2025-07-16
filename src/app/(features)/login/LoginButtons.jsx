@@ -39,6 +39,7 @@ export const LoginButtons = ({ className, username, password }) => {
             localStorage.setItem('userCourse', res.data.course);
             localStorage.setItem('userId', String(res.data.userId)); // 숫자는 문자열로 변환
             localStorage.setItem('name', res.data.name);
+            localStorage.setItem('accessToken', res.data.accessToken); // 토큰 저장
 
             alert('로그인 성공!');
             router.push('/mypage'); // 마이페이지로 이동

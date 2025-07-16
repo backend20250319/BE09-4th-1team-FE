@@ -5,7 +5,7 @@ import ManagerSelection from "./components/ManagerSelection";
 import CalendarComponent from "./components/CalendarComponent";
 import TimeSelection from "./components/TimeSelection";
 import consultingApi from "./api";
-
+import { useRouter } from "next/navigation";
 import "./consulting.css";
 
 const DUMMY_MANAGERS = [
@@ -80,6 +80,7 @@ function Modal({ open, onConfirm, onCancel }) {
 }
 
 export default function ReservationPage() {
+  const router = useRouter();
   const [selectedManager, setSelectedManager] = useState(DUMMY_MANAGERS[0]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -105,34 +106,43 @@ export default function ReservationPage() {
   };
 
   const handleModalConfirm = async () => {
-    const userId = 1;
+    // userId를 localStorage에서 꺼내기!
+    const userId = localStorage.getItem("userId");
     const managerId = selectedManager.id;
 
-    // 날짜를 로컬 기준으로 포맷
+    // 날짜, 시간 포맷은 기존대로
     const year = selectedDate.getFullYear();
     const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
     const day = String(selectedDate.getDate()).padStart(2, "0");
     const formattedDate = `${year}-${month}-${day}`;
-
-    // 시간 포맷
     const startTimeRaw = selectedTime.split("-")[0];
     const formattedTime = `${startTimeRaw.slice(0, 2)}:${startTimeRaw.slice(
       2
     )}:00`;
-
-    // ISO 날짜시간 조합
     const localDateTime = `${formattedDate}T${formattedTime}`;
+
     const consultationDetailsDto = {
-      userId: String(userId),
+      userId: String(userId), // ← localStorage에서 꺼낸 값
       managerId: String(managerId),
       localDateTime: localDateTime,
+      // status: "WAITING",
     };
 
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("로그인이 필요합니다. 토큰이 없습니다.");
+      return;
+    }
+
     try {
+      // 토큰 값도 콘솔에 찍어서 실제 값이 있는지 확인
+      console.log("예약 요청 토큰:", token);
       const res = await consultingApi.createConsultingReservation(
-        consultationDetailsDto
+        JSON.stringify(consultationDetailsDto),
+        token
       );
       console.log("예약 성공:", res);
+      router.push("/mypage");
     } catch (error) {
       console.error("예약 실패:", error);
     }
