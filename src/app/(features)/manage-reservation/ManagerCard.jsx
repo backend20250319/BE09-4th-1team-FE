@@ -9,8 +9,7 @@ export default function ManagerCard({ data, onStatusUpdated }) {
   const {
     sessionId,
     userId,
-    date,
-    time,
+    localDateTime,
     status,
     adminMessage,
     messageTime,
@@ -19,7 +18,6 @@ export default function ManagerCard({ data, onStatusUpdated }) {
   const [modalType, setModalType] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
 
-  // 🔹 userId로 유저 정보 불러오기
   useEffect(() => {
     if (userId) {
       getUserById(userId)
@@ -29,6 +27,11 @@ export default function ManagerCard({ data, onStatusUpdated }) {
         });
     }
   }, [userId]);
+
+  // 날짜 및 시간 포맷팅
+  const dt = new Date(localDateTime);
+  const dateStr = dt.toLocaleDateString("ko-KR").replace(/\./g, ".").replace(/\s/g, "");
+  const timeStr = dt.toTimeString().slice(0, 5);
 
   const getStatusColor = () => {
     switch (status) {
@@ -67,63 +70,47 @@ export default function ManagerCard({ data, onStatusUpdated }) {
     <>
       <div className={styles.card}>
         <div className={styles.row}>
-          {/* 왼쪽: 코스 + 이름 */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "4px", flex: 1 }}>
-            <div className={styles.group}>{userInfo?.course || "로딩 중..."}</div>
-            <div style={{ fontWeight: "bold" }}>{userInfo?.name || "불러오는 중..."}</div>
+          {/* 좌측: 과정/이름 */}
+          <div className={styles.userInfo}>
+            <span className={styles.course}>{userInfo?.course || "과정 로딩 중"}</span>
+            <span className={styles.name}>{userInfo?.name || "이름 로딩 중"}</span>
           </div>
 
-          {/* 가운데: 날짜 + 시간 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1 }}>
-            <div className={styles.datetime}>{date}</div>
-            <div className={styles.time}>{time}</div>
+          {/* 가운데: 날짜/시간 */}
+          <div className={styles.datetimeBox}>
+            <span className={styles.datetime}>{dateStr}</span>
+            <span className={styles.time}>{timeStr}</span>
           </div>
 
-          {/* 오른쪽: 상태 + 버튼 (상태 좌, 버튼 우 세로 정렬) */}
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            gap: "20px",
-            flex: 1,
-          }}>
-            {/* 상태 텍스트 */}
-            <div className={getStatusColor()}>{status}</div>
+          {/* 우측: 상태 + 버튼 */}
+          <div className={styles.statusButtonArea}>
+            <div className={`${styles.statusText} ${getStatusColor()}`}>
+              {status}
+            </div>
 
-            {/* 버튼 세로 정렬 */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+            <div className={styles.buttonGroup}>
               {status === "Waiting" && (
                 <>
-                  <button className={styles.purpleButton} onClick={() => openModal("approve")}>
-                    Approve
-                  </button>
-                  <button className={styles.redButton} onClick={() => openModal("reject")}>
-                    Reject
-                  </button>
+                  <button className={styles.purpleButton} onClick={() => openModal("approve")}>Approve</button>
+                  <button className={styles.redButton} onClick={() => openModal("reject")}>Reject</button>
                 </>
               )}
 
               {status === "Approved" && (
                 <>
-                  <button className={styles.purpleButton} onClick={() => openModal("complete")}>
-                    Complete
-                  </button>
-                  <button className={styles.redButton} onClick={() => openModal("cancel")}>
-                    Cancel
-                  </button>
+                  <button className={styles.purpleButton} onClick={() => openModal("complete")}>Complete</button>
+                  <button className={styles.redButton} onClick={() => openModal("cancel")}>Cancel</button>
                 </>
               )}
 
               {(status === "Rejected" || status === "Cancelled" || status === "Completed") && (
-                <button className={styles.redButton} onClick={() => openModal("delete")}>
-                  Delete
-                </button>
+                <button className={styles.redButton} onClick={() => openModal("delete")}>Delete</button>
               )}
             </div>
           </div>
         </div>
 
-        {/* 관리자 메시지 영역 */}
+        {/* 관리자 메시지 */}
         {adminMessage && (
           <div className={styles.adminMessage} style={{ marginTop: "12px" }}>
             <div style={{ fontWeight: "bold", marginBottom: "6px" }}>
@@ -135,7 +122,7 @@ export default function ManagerCard({ data, onStatusUpdated }) {
         )}
       </div>
 
-      {/* 모달 */}
+      {/* 확인 모달 */}
       {modalType && (
         <ConfirmModal
           type={modalType}

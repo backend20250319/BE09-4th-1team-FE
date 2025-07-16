@@ -1,8 +1,7 @@
 /* Layout */
 .container {
-  max-width: 700px;
+  max-width: 1200px; /* 기존보다 크게 */
   margin: 0 auto;
-  /* padding: 40px 20px; */
   font-family: sans-serif;
 }
 
@@ -45,19 +44,20 @@
 }
 
 /* Card */
-.cardList {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
 .card {
   background: #f7f2ff;
   border-radius: 12px;
-  padding: 16px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
 }
 
 .avatar {
@@ -73,17 +73,30 @@
 
 .row {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
 }
 
 .group {
   color: #8a7ef2;
   font-weight: bold;
 }
+/* 3. 상태 + 버튼 → 가로 배치, 충분한 간격 */
+.statusButtonArea {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 150px; /* 상태와 버튼 사이 넓힘 */
+  flex: 2;
+}
 
+/* 상태 텍스트 */
+.statusText {
+  font-size: 15px;
+  font-weight: bold;
+}
 /* Status Colors */
 .waiting {
   color: #999;
@@ -240,18 +253,28 @@
   justify-content: flex-end;
 }
 
+/* 2. 날짜 / 시간 → 좌우 정렬 */
+.datetimeBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex: 1;
+}
+
 .datetime {
   font-size: 15px;
-  color: #444;
-  margin-top: 4px;
   font-weight: 500;
-  letter-spacing: 0.3px;
+  color: #444;
 }
 
 .time {
-  margin-left: 8px;
-  color: #555;
+  font-size: 15px;
+  color: #666;
 }
+
+
 .profileWrapper {
   display: flex;
   align-items: center;
@@ -271,22 +294,48 @@
   align-items: center;
 }
 
-.redButton {
-  background: #ff4e4e;
+.purpleButton {
+  background-color: #726fff;
   color: white;
   padding: 8px 16px;
   border: none;
   border-radius: 20px;
   font-weight: bold;
+  font-size: 14px;
   cursor: pointer;
 }
 
-.purpleButton {
-  background: #726fff;
+.redButton {
+  background-color: #ff4e4e;
   color: white;
   padding: 8px 16px;
   border: none;
   border-radius: 20px;
   font-weight: bold;
+  font-size: 14px;
   cursor: pointer;
+}
+/* 1. 과정/이름 */
+.userInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 150px;
+  flex: 2;
+}
+
+.course {
+  color: #7d6ff2;
+  font-weight: bold;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.name {
+  font-weight: 500;
+  font-size: 16px;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
