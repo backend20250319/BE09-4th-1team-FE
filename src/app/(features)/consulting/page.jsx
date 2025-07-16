@@ -99,14 +99,27 @@ export default function ReservationPage() {
   useEffect(() => {
     const fetchManagers = async () => {
       try {
+        const token = localStorage.getItem("accessToken");
         const res = await fetch(
-          "http://localhost:8000/api/v1/user-service/users/me"
-        ); // ← 실제 주소로 수정
-        const data = await res.json();
+          "http://localhost:8000/api/v1/user-service/users/managers",
+          {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          }
+        );
+        const text = await res.text();
+        if (!text) {
+          setManagers([]);
+          setSelectedManager(null);
+          alert("매니저 데이터가 없습니다.");
+          return;
+        }
+        const data = JSON.parse(text);
+        console.log("매니저 데이터:", data);
         setManagers(data);
         setSelectedManager(data[0]); // 첫 번째 매니저 기본 선택
       } catch (err) {
         console.error("강사 목록 불러오기 실패:", err);
+        alert("강사 목록을 불러오지 못했습니다.");
       }
     };
     fetchManagers();

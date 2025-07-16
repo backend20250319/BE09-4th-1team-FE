@@ -77,9 +77,16 @@ export default function ManagerSelection({
             >
               <div className="manager-image-box">
                 <img
-                  src={manager.imageUrl}
+                  src={
+                    !manager.profileImageUrl || manager.profileImageUrl === 'null'
+                      ? '/images/common/user.png'
+                      : manager.profileImageUrl.startsWith('/uploads')
+                        ? `http://localhost:8000${manager.profileImageUrl}`
+                        : manager.profileImageUrl
+                  }
                   alt={manager.name}
                   className="manager-image"
+                  onError={e => { e.target.src = '/images/common/user.png'; }}
                 />
               </div>
               <div className="manager-name-box">
