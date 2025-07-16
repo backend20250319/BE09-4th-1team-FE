@@ -1,69 +1,30 @@
 "use client";
 
-import React, { useState } from 'react';
-import styles from '../reservation/page.module.css'; // 공통 스타일 재사용
+import React, { useEffect, useState } from 'react';
+import styles from '../reservation/page.module.css';
 import ManagerCard from './ManagerCard';
-
-const managerData = [
-  {
-    id: 1,
-    name: '비빙비빙',
-    group: '풀스택 9기',
-    date: '2025.07.07',
-    time: '18:00 ~ 18:10',
-    status: 'Waiting',
-  },
-  {
-    id: 2,
-    name: '비빙비빙',
-    group: '풀스택 9기',
-    date: '2025.07.07',
-    time: '18:00 ~ 18:10',
-    status: 'Approved',
-  },
-  {
-    id: 3,
-    name: '비빙비빙',
-    group: '풀스택 9기',
-    date: '2025.07.07',
-    time: '18:00 ~ 18:10',
-    status: 'Cancelled',
-    adminMessage: '상담 확정 안내가 없었으나 개인 사정으로 인해 부득이하게 취소하게 되었습니다.',
-    messageTime: '2025.07.02. 17:50',
-  },
-  {
-    id: 4,
-    name: '조나단',
-    group: '매니저',
-    date: '2025.07.07',
-    time: '18:00 ~ 18:10',
-    status: 'Rejected',
-    adminMessage: '상담 진행이 어려운 상황이 되었습니다. 다시 예약 부탁드립니다.',
-    messageTime: '2025.07.02. 17:50',
-  },
-  {
-    id: 5,
-    name: '지훈구니',
-    group: '풀스택 9기',
-    date: '2025.07.07',
-    time: '18:00 ~ 18:10',
-    status: 'Completed',
-  },
-  {
-    id: 6,
-    name: '비빙비빙',
-    group: '풀스택 9기',
-    date: '2025.07.07',
-    time: '18:00 ~ 18:10',
-    status: 'Cancelled',
-    adminMessage: '학생이 예약 시간에 미참석하여 자동 취소되었습니다.',
-    messageTime: '2025.07.02. 17:50',
-  },
-];
+import { getConsultationsByManagerId } from './api';
 
 export default function ManageReservationPage() {
   const [selectedStatus, setSelectedStatus] = useState('All');
+  const [managerData, setManagerData] = useState([]);
   const tabs = ['All', 'Waiting', 'Approved', 'Rejected', 'Cancelled', 'Completed'];
+
+  const fetchData = () => {
+    const managerId = "1"; // 실제 로그인한 매니저 ID
+    getConsultationsByManagerId(managerId)
+      .then(data => {
+        console.log("📋 매니저 상담 목록:", data);
+        setManagerData(data);
+      })
+      .catch(err => {
+        console.error("데이터 로딩 실패:", err);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -86,7 +47,7 @@ export default function ManageReservationPage() {
         {managerData
           .filter(item => selectedStatus === 'All' || item.status === selectedStatus)
           .map((item) => (
-            <ManagerCard key={item.id} data={item} />
+            <ManagerCard key={item.id || item.sessionId} data={item} onStatusUpdated={fetchData} />
           ))}
       </div>
     </div>
