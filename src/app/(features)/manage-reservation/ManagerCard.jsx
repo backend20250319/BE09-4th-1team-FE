@@ -1,16 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../reservation/page.module.css";
 import ConfirmModal from "./ConfirmModal";
-import { updateConsultationStatus } from "./api";
+import { updateConsultationStatus, getUserById } from "./api";
 
 export default function ManagerCard({ data, onStatusUpdated }) {
   const {
-    sessionId, name, group, date, time, status, adminMessage, messageTime
+    sessionId,
+    userId,
+    date,
+    time,
+    status,
+    adminMessage,
+    messageTime,
   } = data;
 
   const [modalType, setModalType] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+
+  // 🔹 userId로 유저 정보 불러오기
+  useEffect(() => {
+    if (userId) {
+      getUserById(userId)
+        .then(setUserInfo)
+        .catch((err) => {
+          console.error("유저 정보 불러오기 실패:", err);
+        });
+    }
+  }, [userId]);
 
   const getStatusColor = () => {
     switch (status) {
@@ -19,7 +37,7 @@ export default function ManagerCard({ data, onStatusUpdated }) {
       case "Rejected": return styles.rejected;
       case "Cancelled": return styles.cancelled;
       case "Completed": return styles.completed;
-      default: return '';
+      default: return "";
     }
   };
 
@@ -31,74 +49,98 @@ export default function ManagerCard({ data, onStatusUpdated }) {
       modalType === "cancel" ? "Cancelled" :
       modalType === "reject" ? "Rejected" :
       modalType === "approve" ? "Approved" :
-      "Completed";
+      modalType === "complete" ? "Completed" :
+      null;
 
-    const payload = { status: newStatus };
+    if (!newStatus) return;
 
     try {
-      console.log("✅ 보내는 sessionId:", sessionId);
-      console.log("✅ 보내는 payload:", payload);
-      await updateConsultationStatus(sessionId, payload);
+      await updateConsultationStatus(sessionId, newStatus);
       onStatusUpdated();
-      closeModal();
     } catch (err) {
-      console.error("❗ 상태 변경 실패:", err.response?.data || err);
-      alert("상태변경 실패");
+      console.error("상태 업데이트 실패:", err);
     }
-  };
-
-  const renderButtons = () => {
-    if (status === "Waiting") {
-      return (
-        <div className={styles.buttonGroup}>
-          <button className={styles.approveButton} onClick={() => openModal("approve")}>Approve</button>
-          <button className={styles.cancelButton} onClick={() => openModal("reject")}>Reject</button>
-        </div>
-      );
-    }
-    if (status === "Approved") {
-      return (
-        <div className={styles.buttonGroup}>
-          <button className={styles.completeButton} onClick={() => openModal("complete")}>Complete</button>
-          <button className={styles.cancelButton} onClick={() => openModal("cancel")}>Cancel</button>
-        </div>
-      );
-    }
-    return (
-      <div className={styles.buttonGroup}>
-        <button className={styles.cancelButton}>Delete</button>
-      </div>
-    );
+    closeModal();
   };
 
   return (
     <>
       <div className={styles.card}>
-        <div className={styles.info}>
-          <div className={styles.row}>
-            <span className={styles.group}>{group}</span>
-            <span>{name}</span>
-            <span>{date}</span>
-            <span>{time}</span>
-            <span className={getStatusColor()}>{status}</span>
-            {renderButtons()}
+        <div className={styles.row}>
+          {/* 왼쪽: 코스 + 이름 */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "4px", flex: 1 }}>
+            <div className={styles.group}>{userInfo?.course || "로딩 중..."}</div>
+            <div style={{ fontWeight: "bold" }}>{userInfo?.name || "불러오는 중..."}</div>
           </div>
 
-          {adminMessage && (
-            <div className={styles.adminMessage}>
-              <strong>{group} {name}</strong>&nbsp;
-              <span className={styles.messageTime}>{messageTime}</span>
-              <p>{adminMessage}</p>
+          {/* 가운데: 날짜 + 시간 */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1 }}>
+            <div className={styles.datetime}>{date}</div>
+            <div className={styles.time}>{time}</div>
+          </div>
+
+          {/* 오른쪽: 상태 + 버튼 (상태 좌, 버튼 우 세로 정렬) */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            gap: "20px",
+            flex: 1,
+          }}>
+            {/* 상태 텍스트 */}
+            <div className={getStatusColor()}>{status}</div>
+
+            {/* 버튼 세로 정렬 */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              {status === "Waiting" && (
+                <>
+                  <button className={styles.purpleButton} onClick={() => openModal("approve")}>
+                    Approve
+                  </button>
+                  <button className={styles.redButton} onClick={() => openModal("reject")}>
+                    Reject
+                  </button>
+                </>
+              )}
+
+              {status === "Approved" && (
+                <>
+                  <button className={styles.purpleButton} onClick={() => openModal("complete")}>
+                    Complete
+                  </button>
+                  <button className={styles.redButton} onClick={() => openModal("cancel")}>
+                    Cancel
+                  </button>
+                </>
+              )}
+
+              {(status === "Rejected" || status === "Cancelled" || status === "Completed") && (
+                <button className={styles.redButton} onClick={() => openModal("delete")}>
+                  Delete
+                </button>
+              )}
             </div>
-          )}
+          </div>
         </div>
+
+        {/* 관리자 메시지 영역 */}
+        {adminMessage && (
+          <div className={styles.adminMessage} style={{ marginTop: "12px" }}>
+            <div style={{ fontWeight: "bold", marginBottom: "6px" }}>
+              매니저 {userInfo?.name || ""}{" "}
+              <span className={styles.messageTime}>· {messageTime}</span>
+            </div>
+            <div>{adminMessage}</div>
+          </div>
+        )}
       </div>
 
+      {/* 모달 */}
       {modalType && (
         <ConfirmModal
           type={modalType}
-          onClose={closeModal}
           onConfirm={handleConfirm}
+          onCancel={closeModal}
         />
       )}
     </>

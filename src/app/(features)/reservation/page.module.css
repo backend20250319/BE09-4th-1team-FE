@@ -239,3 +239,54 @@
   flex-direction: row;
   justify-content: flex-end;
 }
+
+.datetime {
+  font-size: 15px;
+  color: #444;
+  margin-top: 4px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.time {
+  margin-left: 8px;
+  color: #555;
+}
+.profileWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+
+.infoSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.buttonWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.redButton {
+  background: #ff4e4e;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.purpleButton {
+  background: #726fff;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
