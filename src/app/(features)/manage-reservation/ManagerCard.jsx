@@ -21,7 +21,7 @@ export default function ManagerCard({ data, onStatusUpdated }) {
 
   // 🔹 userId로 유저 정보 불러오기
   useEffect(() => {
-    if (userId) {
+    if (userId !== null && userId !== undefined && userId !== "null") {
       getUserById(userId)
         .then(setUserInfo)
         .catch((err) => {

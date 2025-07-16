@@ -170,7 +170,7 @@ export default function ReservationPage() {
 
     try {
       const res = await consultingApi.createConsultingReservation(
-        JSON.stringify(consultationDetailsDto),
+        consultationDetailsDto,
         token
       );
       console.log("예약 성공:", res);
