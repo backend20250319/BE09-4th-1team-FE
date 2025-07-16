@@ -3,20 +3,13 @@
 import "./ManagerSelection.css";
 import React from "react";
 
-const DUMMY_MANAGERS = [
-  { id: 1, name: "Mr.빌 강사님", imageUrl: "/images/consulting/mr.bill.jpg" },
-  { id: 2, name: "Mr.웨렌 강사님", imageUrl: "/images/consulting/warren.webp" },
-  { id: 3, name: "Mr.마 강사님", imageUrl: "/images/consulting/ma.png" },
-  { id: 4, name: "Mr.장 강사님", imageUrl: "/images/consulting/jang.jpeg" },
-  { id: 5, name: "Mr.강 강사님", imageUrl: "/images/consulting/Kang.png" },
-];
-
 export default function ManagerSelection({
+  managers = [],
   selectedManager,
   onSelect = () => {},
 }) {
   const centerManagerIndex = selectedManager
-    ? DUMMY_MANAGERS.findIndex((m) => m.id === selectedManager.id)
+    ? managers.findIndex((m) => m.id === selectedManager.id)
     : 0;
 
   const navigateManager = (direction) => {
@@ -24,10 +17,10 @@ export default function ManagerSelection({
     if (direction === "left") {
       newIndex = Math.max(0, centerManagerIndex - 1);
     } else {
-      newIndex = Math.min(DUMMY_MANAGERS.length - 1, centerManagerIndex + 1);
+      newIndex = Math.min(managers.length - 1, centerManagerIndex + 1);
     }
     if (newIndex !== centerManagerIndex) {
-      onSelect(DUMMY_MANAGERS[newIndex]);
+      onSelect(managers[newIndex]);
     }
   };
 
@@ -49,13 +42,14 @@ export default function ManagerSelection({
           }
         />
       </button>
+
       <div className="manager-cards-3d">
-        {DUMMY_MANAGERS.map((manager, index) => {
+        {managers.map((manager, index) => {
           const offset = index - centerManagerIndex;
-          // -2, -1, 0, 1, 2만 보이게
           if (Math.abs(offset) > 2) return null;
+
           const isCenter = offset === 0;
-          let style = {
+          const style = {
             zIndex: 10 - Math.abs(offset),
             opacity: Math.abs(offset) === 2 ? 0.5 : 1,
             transform: `translate(-50%, -50%) translateX(${
@@ -73,6 +67,7 @@ export default function ManagerSelection({
             top: "50%",
             transformOrigin: "center center",
           };
+
           return (
             <div
               key={manager.id}
@@ -82,9 +77,16 @@ export default function ManagerSelection({
             >
               <div className="manager-image-box">
                 <img
-                  src={manager.imageUrl}
+                  src={
+                    !manager.profileImageUrl || manager.profileImageUrl === 'null'
+                      ? '/images/common/user.png'
+                      : manager.profileImageUrl.startsWith('/uploads')
+                        ? `http://localhost:8000${manager.profileImageUrl}`
+                        : manager.profileImageUrl
+                  }
                   alt={manager.name}
                   className="manager-image"
+                  onError={e => { e.target.src = '/images/common/user.png'; }}
                 />
               </div>
               <div className="manager-name-box">
@@ -94,11 +96,12 @@ export default function ManagerSelection({
           );
         })}
       </div>
+
       <button
         className="arrow-btn right"
         aria-label="다음 매니저"
         onClick={() => navigateManager("right")}
-        disabled={centerManagerIndex === DUMMY_MANAGERS.length - 1}
+        disabled={centerManagerIndex === managers.length - 1}
       >
         <img
           src="/images/consulting/next.png"
@@ -106,7 +109,7 @@ export default function ManagerSelection({
           width={50}
           height={50}
           className={
-            centerManagerIndex === DUMMY_MANAGERS.length - 1
+            centerManagerIndex === managers.length - 1
               ? "arrow-img disabled right"
               : "arrow-img right"
           }
