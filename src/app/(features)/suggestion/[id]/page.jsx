@@ -1,16 +1,15 @@
-'use client'
+"use client";
 
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "next/navigation";
 import { getSuggestionPost } from "../util/PostServiceApi";
-import { getAnswerPost, createAnswerPost} from "../util/AnswerServiceApi";
+import { getAnswerPost, createAnswerPost } from "../util/AnswerServiceApi";
 import TitleSection from "./components/TitleSection";
 import ContentSection from "./components/ContentSection";
 import CommentSection from "../../comments/components/CommentSection";
 import dynamic from "next/dynamic";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Viewer } from "@toast-ui/react-editor";
-
 
 // TuiEditor를 동적으로 import
 const Editor = dynamic(
@@ -35,7 +34,7 @@ const page = () => {
         setLoading(true);
         const data = await getSuggestionPost(params.id);
         setPostData(data);
-        
+
         // isAnswered가 true인 경우 답변 데이터도 가져오기
         if (data.isAnswered) {
           try {
@@ -62,7 +61,7 @@ const page = () => {
     if (editorRef.current) {
       try {
         setIsSubmitting(true);
-        
+
         const editorInstance = editorRef.current.getInstance();
         const markdownContent = editorInstance.getMarkdown();
 
@@ -80,21 +79,21 @@ const page = () => {
           title: answerTitle,
           suggestionPostId: postData.id,
           content: markdownContent,
-          userId: 1 // 임시로 1로 설정 (실제 인증 시스템에서 가져와야 함)
+          userId: 1, // 임시로 1로 설정 (실제 인증 시스템에서 가져와야 함)
         };
 
         const response = await createAnswerPost(answerData);
-        console.log('답변 생성 성공:', response);
-        
+        console.log("답변 생성 성공:", response);
+
         // 성공 후 에디터 숨기고 게시글 새로고침
         alert("답변이 성공적으로 등록되었습니다!");
         setShowAnswerEditor(false);
         setAnswerTitle("");
-        
+
         // 게시글 데이터 새로고침
         const updatedData = await getSuggestionPost(params.id);
         setPostData(updatedData);
-        
+
         // 답변 데이터도 새로고침
         if (updatedData.isAnswered) {
           try {
@@ -104,9 +103,8 @@ const page = () => {
             console.error("답변을 불러오는 중 오류가 발생했습니다:", answerErr);
           }
         }
-        
       } catch (error) {
-        console.error('답변 생성 에러:', error);
+        console.error("답변 생성 에러:", error);
         alert("답변 생성에 실패했습니다. 다시 시도해주세요.");
       } finally {
         setIsSubmitting(false);
@@ -131,62 +129,83 @@ const page = () => {
   }
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <TitleSection title={postData.title}></TitleSection>
       <ContentSection
-        userName={postData.userName}
+        userName={postData.username}
         createdAt={postData.createdAt}
         isAnswered={postData.isAnswered}
         content={postData.content}
         likeCount={postData.likeCount}
         unlikeCount={postData.unlikeCount}
       />
-      
+
       {/* 답변 표시 - isAnswered가 true일 때 */}
       {postData.isAnswered && answerData && (
-        <div style={{ 
-          margin: "20px 0", 
-          padding: "20px", 
-          border: "1px solid #28a745", 
-          borderRadius: "5px",
-          backgroundColor: "#f8fff9"
-        }}>
-          <div style={{ 
-            display: "flex", 
-            alignItems: "center", 
-            marginBottom: "15px",
-            paddingBottom: "10px",
-            borderBottom: "1px solid #e9ecee"
-          }}>
-            <div style={{
-              backgroundColor: "#28a745",
-              color: "white",
-              padding: "5px 10px",
-              borderRadius: "15px",
-              fontSize: "12px",
-              marginRight: "10px"
-            }}>
+        <div
+          style={{
+            margin: "20px 0",
+            padding: "20px",
+            border: "1px solid #28a745",
+            borderRadius: "5px",
+            backgroundColor: "#f8fff9",
+            width: "80%",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "15px",
+              paddingBottom: "10px",
+              borderBottom: "1px solid #e9ecee",
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: "#28a745",
+                color: "white",
+                padding: "5px 10px",
+                borderRadius: "15px",
+                fontSize: "12px",
+                marginRight: "10px",
+              }}
+            >
               답변
             </div>
             <span style={{ color: "#666", fontSize: "14px" }}>
-              {answerData.userName || "매니저"} • {new Date(answerData.createdAt).toLocaleDateString()}
+              {answerData.username || "매니저"} •{" "}
+              {new Date(answerData.createdAt).toLocaleDateString()}
             </span>
           </div>
           {answerData.title && (
-            <div style={{ fontWeight: "bold", fontSize: "18px", marginBottom: "10px" }}>{answerData.title}</div>
+            <div
+              style={{
+                fontWeight: "bold",
+                fontSize: "18px",
+                marginBottom: "10px",
+              }}
+            >
+              {answerData.title}
+            </div>
           )}
-          
-            <Viewer
-              width="80%"
-              initialValue={answerData.content}
-            />
-    
-          <div style={{ 
-            marginTop: "15px",
-            display: "flex",
-            alignItems: "center",
-            gap: "20px"
-          }}>
+
+          <Viewer width="80%" initialValue={answerData.content} />
+
+          {/* <div
+            style={{
+              marginTop: "15px",
+              display: "flex",
+              alignItems: "center",
+              gap: "20px",
+            }}
+          >
             <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
               <span style={{ color: "#666" }}>👍</span>
               <span style={{ color: "#666", fontSize: "14px" }}>
@@ -199,10 +218,10 @@ const page = () => {
                 {answerData.unlikeCount || 0}
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       )}
-      
+
       {/* 답변 생성 버튼 - isAnswered가 false일 때만 표시 */}
       {!postData.isAnswered && !showAnswerEditor && (
         <div style={{ textAlign: "center", margin: "20px 0" }}>
@@ -215,7 +234,7 @@ const page = () => {
               border: "none",
               borderRadius: "5px",
               cursor: "pointer",
-              fontSize: "16px"
+              fontSize: "16px",
             }}
           >
             답변 생성하기
@@ -225,20 +244,27 @@ const page = () => {
 
       {/* 답변 에디터 */}
       {showAnswerEditor && (
-        <div style={{ margin: "20px 0", padding: "20px", border: "1px solid #ddd", borderRadius: "5px" }}>
+        <div
+          style={{
+            margin: "20px 0",
+            padding: "20px",
+            border: "1px solid #ddd",
+            borderRadius: "5px",
+          }}
+        >
           <h3 style={{ marginBottom: "15px" }}>답변 작성</h3>
           <input
             type="text"
             placeholder="답변 제목을 입력하세요"
             value={answerTitle}
-            onChange={e => setAnswerTitle(e.target.value)}
+            onChange={(e) => setAnswerTitle(e.target.value)}
             style={{
               width: "100%",
               padding: "10px",
               marginBottom: "15px",
               fontSize: "16px",
               border: "1px solid #ccc",
-              borderRadius: "5px"
+              borderRadius: "5px",
             }}
           />
           <div style={{ width: "100%" }}>
@@ -264,7 +290,7 @@ const page = () => {
                 borderRadius: "5px",
                 cursor: "pointer",
                 marginRight: "10px",
-                fontSize: "16px"
+                fontSize: "16px",
               }}
             >
               {isSubmitting ? "등록 중..." : "답변 등록"}
@@ -278,7 +304,7 @@ const page = () => {
                 border: "none",
                 borderRadius: "5px",
                 cursor: "pointer",
-                fontSize: "16px"
+                fontSize: "16px",
               }}
             >
               취소

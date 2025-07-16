@@ -1,10 +1,16 @@
+// src/app/(features)/consulting/api.js
 import axios from "axios";
 
 const BASE_URL = "http://localhost:8000/api/v1/consulting-service/consulting";
 
 // 상담 예약 생성
-const createConsultingReservation = async (consultationDetailsDto) => {
-  const response = await axios.post(BASE_URL, consultationDetailsDto);
+const createConsultingReservation = async (consultationDetailsDto, token) => {
+  const response = await axios.post(BASE_URL, consultationDetailsDto, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
   return response.data;
 };
 

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "./axiosInstance";
 
 const BASE_URL = "http://localhost:8000/api/v1/post-service/suggestionPost";
 
@@ -42,7 +42,7 @@ export const decreaseCommentCount = async (data) => {
   return response.data.data;
 };
 
-export const getSuggestionPosts = async (pageable = {}) => {
+export const getSuggestionPosts = async (accessToken, pageable = {}) => {
   const {
     page = 0,
     size = 10,
@@ -56,7 +56,11 @@ export const getSuggestionPosts = async (pageable = {}) => {
     sort: `${sort},${direction}`,
   });
 
-  const response = await axios.get(`${BASE_URL}?${params}`);
+  const response = await axios.get(`${BASE_URL}?${params}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
   return response.data.data;
 };

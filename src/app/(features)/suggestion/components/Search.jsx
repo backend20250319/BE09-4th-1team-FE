@@ -21,18 +21,19 @@ export const Search = () => {
 
   // 게시글 목록을 가져오는 함수
   const fetchPosts = async (page = 0) => {
+    console.log("get posts", page);
     try {
       setLoading(true);
       setError(null);
-      
+
       // 검색 파라미터 구성
       const params = {
         page: page,
         size: POSTS_PER_PAGE,
         sort: "createdAt",
-        direction: "DESC"
+        direction: "DESC",
       };
-      
+
       const response = await getSuggestionPosts(params);
       setPosts(response.content || []);
       setTotalPages(response.totalPages || 0);
@@ -86,7 +87,7 @@ export const Search = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식
+    return date.toISOString().split("T")[0]; // YYYY-MM-DD 형식
   };
 
   return (
@@ -133,9 +134,7 @@ export const Search = () => {
 
       {/* 로딩 상태 */}
       {loading && (
-        <div style={{ textAlign: "center", padding: "20px" }}>
-          로딩 중...
-        </div>
+        <div style={{ textAlign: "center", padding: "20px" }}>로딩 중...</div>
       )}
 
       {/* 에러 상태 */}
@@ -148,16 +147,15 @@ export const Search = () => {
       {/* 게시글 목록 */}
       {!loading && !error && posts.length === 0 && (
         <div style={{ textAlign: "center", padding: "20px" }}>
-          {activeFilter !== "all" ? "해당 상태의 게시글이 없습니다." : "게시글이 없습니다."}
+          {activeFilter !== "all"
+            ? "해당 상태의 게시글이 없습니다."
+            : "게시글이 없습니다."}
         </div>
       )}
 
-      {!loading && !error && posts.map((post) => (
-        <PostItem
-          key={post.id}
-          post={post}
-        />
-      ))}
+      {!loading &&
+        !error &&
+        posts.map((post) => <PostItem key={post.id} post={post} />)}
 
       <button
         style={{
@@ -178,7 +176,7 @@ export const Search = () => {
       >
         건의하기
       </button>
-      
+
       {!loading && !error && totalPages > 0 && (
         <Pagination
           currentPage={currentPage + 1} // API는 0부터 시작하지만 UI는 1부터 시작

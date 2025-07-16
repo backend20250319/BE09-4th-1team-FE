@@ -1,5 +1,4 @@
-import axios from 'axios';
-
+import axios from "./axiosInstance";
 const BASE_URL = "http://localhost:8000/api/v1/post-service/answerPost";
 
 // 답변 게시글 생성
