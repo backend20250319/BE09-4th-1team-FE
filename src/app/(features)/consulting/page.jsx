@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ManagerSelection from "./components/ManagerSelection";
 import CalendarComponent from "./components/CalendarComponent";
 import TimeSelection from "./components/TimeSelection";
@@ -8,69 +8,22 @@ import consultingApi from "./api";
 import { useRouter } from "next/navigation";
 import "./consulting.css";
 
-const DUMMY_MANAGERS = [
-  { id: 1, name: "Mr.빌 강사님", imageUrl: "/images/consulting/mr.bill.jpg" },
-  { id: 2, name: "Mr.웨렌 강사님", imageUrl: "/images/consulting/warren.webp" },
-  { id: 3, name: "Mr.마 강사님", imageUrl: "/images/consulting/ma.png" },
-  { id: 4, name: "Mr.장 강사님", imageUrl: "/images/consulting/jang.jpeg" },
-  { id: 5, name: "Mr.강 강사님", imageUrl: "/images/consulting/Kang.png" },
-];
+// ✅ Modal 컴포넌트는 그대로 사용
 
 function Modal({ open, onConfirm, onCancel }) {
   if (!open) return null;
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        background: "rgba(0,0,0,0.4)",
-        zIndex: 1000,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div
-        style={{
-          background: "#fff",
-          borderRadius: "32px",
-          padding: "48px 32px",
-          minWidth: "480px",
-          maxWidth: "90vw",
-          boxShadow: "0 2px 32px rgba(0,0,0,0.15)",
-          textAlign: "center",
-          border: "2px solid #E5E7EB",
-        }}
-      >
-        <h2
-          style={{ fontWeight: "bold", fontSize: "28px", marginBottom: "24px" }}
-        >
-          알림
-        </h2>
-        <div style={{ marginBottom: "40px", fontSize: "18px", color: "#222" }}>
+    <div style={modalStyles.overlay}>
+      <div style={modalStyles.box}>
+        <h2 style={modalStyles.title}>알림</h2>
+        <div style={modalStyles.message}>
           선택하신 옵션으로 상담 예약이 진행됩니다
         </div>
-        <div style={{ display: "flex", justifyContent: "center", gap: "32px" }}>
+        <div style={modalStyles.buttons}>
           <button className="modal-confirm-btn" onClick={onConfirm}>
             Confirm
           </button>
-          <button
-            onClick={onCancel}
-            style={{
-              background: "#fff",
-              color: "#A78BFA",
-              border: "2px solid #A78BFA",
-              borderRadius: "32px",
-              padding: "16px 48px",
-              fontWeight: "bold",
-              fontSize: "20px",
-              outline: "none",
-              cursor: "pointer",
-            }}
-          >
+          <button style={modalStyles.cancelBtn} onClick={onCancel}>
             Back
           </button>
         </div>
@@ -79,14 +32,98 @@ function Modal({ open, onConfirm, onCancel }) {
   );
 }
 
+const modalStyles = {
+  overlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    background: "rgba(0,0,0,0.4)",
+    zIndex: 1000,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  box: {
+    background: "#fff",
+    borderRadius: "32px",
+    padding: "48px 32px",
+    minWidth: "480px",
+    maxWidth: "90vw",
+    boxShadow: "0 2px 32px rgba(0,0,0,0.15)",
+    textAlign: "center",
+    border: "2px solid #E5E7EB",
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: "28px",
+    marginBottom: "24px",
+  },
+  message: {
+    marginBottom: "40px",
+    fontSize: "18px",
+    color: "#222",
+  },
+  buttons: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "32px",
+  },
+  cancelBtn: {
+    background: "#fff",
+    color: "#A78BFA",
+    border: "2px solid #A78BFA",
+    borderRadius: "32px",
+    padding: "16px 48px",
+    fontWeight: "bold",
+    fontSize: "20px",
+    outline: "none",
+    cursor: "pointer",
+  },
+};
+
 export default function ReservationPage() {
   const router = useRouter();
-  const [selectedManager, setSelectedManager] = useState(DUMMY_MANAGERS[0]);
+
+  // ✅ 1. 매니저 목록 상태 추가
+  const [managers, setManagers] = useState([]);
+  const [selectedManager, setSelectedManager] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [showTimeSelection, setShowTimeSelection] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [tempState, setTempState] = useState(null);
+
+  // ✅ 2. 매니저 목록 fetch
+  useEffect(() => {
+    const fetchManagers = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const res = await fetch(
+          "http://localhost:8000/api/v1/user-service/users/managers",
+          {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          }
+        );
+        const text = await res.text();
+        if (!text) {
+          setManagers([]);
+          setSelectedManager(null);
+          alert("매니저 데이터가 없습니다.");
+          return;
+        }
+        const data = JSON.parse(text);
+        console.log("매니저 데이터:", data);
+        setManagers(data);
+        setSelectedManager(data[0]); // 첫 번째 매니저 기본 선택
+      } catch (err) {
+        console.error("강사 목록 불러오기 실패:", err);
+        alert("강사 목록을 불러오지 못했습니다.");
+      }
+    };
+    fetchManagers();
+  }, []);
 
   const handleManagerSelect = (manager) => setSelectedManager(manager);
   const handleDateSelection = (date) => {
@@ -106,11 +143,9 @@ export default function ReservationPage() {
   };
 
   const handleModalConfirm = async () => {
-    // userId를 localStorage에서 꺼내기!
     const userId = localStorage.getItem("userId");
     const managerId = selectedManager.id;
 
-    // 날짜, 시간 포맷은 기존대로
     const year = selectedDate.getFullYear();
     const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
     const day = String(selectedDate.getDate()).padStart(2, "0");
@@ -122,10 +157,9 @@ export default function ReservationPage() {
     const localDateTime = `${formattedDate}T${formattedTime}`;
 
     const consultationDetailsDto = {
-      userId: String(userId), // ← localStorage에서 꺼낸 값
+      userId: String(userId),
       managerId: String(managerId),
       localDateTime: localDateTime,
-      // status: "WAITING",
     };
 
     const token = localStorage.getItem("accessToken");
@@ -135,8 +169,6 @@ export default function ReservationPage() {
     }
 
     try {
-      // 토큰 값도 콘솔에 찍어서 실제 값이 있는지 확인
-      console.log("예약 요청 토큰:", token);
       const res = await consultingApi.createConsultingReservation(
         JSON.stringify(consultationDetailsDto),
         token
@@ -148,7 +180,6 @@ export default function ReservationPage() {
     }
   };
 
-  //
   const handleModalCancel = () => {
     if (tempState) {
       setSelectedManager(tempState.manager);
@@ -169,18 +200,25 @@ export default function ReservationPage() {
             공간입니다
           </p>
         </section>
+
+        {/* ✅ 매니저 목록을 동적으로 넘김 */}
         <section className="consulting-manager-section">
-          <ManagerSelection
-            selectedManager={selectedManager}
-            onSelect={handleManagerSelect}
-          />
+          {managers.length > 0 && (
+            <ManagerSelection
+              managers={managers}
+              selectedManager={selectedManager}
+              onSelect={handleManagerSelect}
+            />
+          )}
         </section>
+
         <section className="consulting-calendar-section">
           <CalendarComponent
             onDateSelect={handleDateSelection}
             selectedDate={selectedDate}
           />
         </section>
+
         {showTimeSelection && (
           <section className="consulting-time-section">
             <TimeSelection
@@ -189,6 +227,7 @@ export default function ReservationPage() {
             />
           </section>
         )}
+
         <section className="consulting-apply-section">
           <button
             className="consulting-apply-btn"
@@ -199,6 +238,7 @@ export default function ReservationPage() {
           </button>
         </section>
       </main>
+
       <Modal
         open={showModal}
         onConfirm={handleModalConfirm}
