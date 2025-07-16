@@ -1,64 +1,66 @@
 "use client";
 
-import React, { useState } from 'react';
-import styles from '../reservation/page.module.css';
-import CancelModal from '../reservation/components/CancelModal';
-import CancelReasonModal from '../reservation/components/CancelReasonModal';
+import React, { useState } from "react";
+import styles from "../reservation/page.module.css";
+import ConfirmModal from "./ConfirmModal";
+import { updateConsultationStatus } from "./api";
 
-export default function ManagerCard({ data }) {
-  const { name, group, date, time, status, adminMessage, messageTime } = data;
+export default function ManagerCard({ data, onStatusUpdated }) {
+  const {
+    sessionId, name, group, date, time, status, adminMessage, messageTime
+  } = data;
 
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [showReason, setShowReason] = useState(false);
-  const [reasonType, setReasonType] = useState("cancel"); // "cancel" or "reject"
+  const [modalType, setModalType] = useState(null);
 
   const getStatusColor = () => {
     switch (status) {
-      case 'Waiting': return styles.waiting;
-      case 'Approved': return styles.approved;
-      case 'Rejected': return styles.rejected;
-      case 'Cancelled': return styles.cancelled;
-      case 'Completed': return styles.completed;
+      case "Waiting": return styles.waiting;
+      case "Approved": return styles.approved;
+      case "Rejected": return styles.rejected;
+      case "Cancelled": return styles.cancelled;
+      case "Completed": return styles.completed;
       default: return '';
     }
   };
 
-  const handleFinalSubmit = (reason) => {
-    setShowReason(false);
-    alert(`예약이 취소되었습니다.\n사유: ${reason}`);
-    // TODO: 상태 변경 처리 or API 호출
+  const openModal = (type) => setModalType(type);
+  const closeModal = () => setModalType(null);
+
+  const handleConfirm = async () => {
+    const newStatus =
+      modalType === "cancel" ? "Cancelled" :
+      modalType === "reject" ? "Rejected" :
+      modalType === "approve" ? "Approved" :
+      "Completed";
+
+    const payload = { status: newStatus };
+
+    try {
+      console.log("✅ 보내는 sessionId:", sessionId);
+      console.log("✅ 보내는 payload:", payload);
+      await updateConsultationStatus(sessionId, payload);
+      onStatusUpdated();
+      closeModal();
+    } catch (err) {
+      console.error("❗ 상태 변경 실패:", err.response?.data || err);
+      alert("상태변경 실패");
+    }
   };
 
   const renderButtons = () => {
-    if (status === 'Waiting') {
+    if (status === "Waiting") {
       return (
         <div className={styles.buttonGroup}>
-          <button className={styles.approveButton}>Approve</button>
-          <button
-            className={styles.cancelButton}
-            onClick={() => {
-              setReasonType("reject");
-              setShowConfirm(true);
-            }}
-          >
-            Reject
-          </button>
+          <button className={styles.approveButton} onClick={() => openModal("approve")}>Approve</button>
+          <button className={styles.cancelButton} onClick={() => openModal("reject")}>Reject</button>
         </div>
       );
     }
-    if (status === 'Approved') {
+    if (status === "Approved") {
       return (
         <div className={styles.buttonGroup}>
-          <button className={styles.completeButton}>Complete</button>
-          <button
-            className={styles.cancelButton}
-            onClick={() => {
-              setReasonType("cancel");
-              setShowConfirm(true);
-            }}
-          >
-            Cancel
-          </button>
+          <button className={styles.completeButton} onClick={() => openModal("complete")}>Complete</button>
+          <button className={styles.cancelButton} onClick={() => openModal("cancel")}>Cancel</button>
         </div>
       );
     }
@@ -92,27 +94,11 @@ export default function ManagerCard({ data }) {
         </div>
       </div>
 
-      {/* ✅ 1차 확인 모달 */}
-      {showConfirm && (
-        <CancelModal
-          type={reasonType} // 👈 reject 또는 cancel
-          onClose={() => setShowConfirm(false)}
-          onConfirm={() => {
-            setShowConfirm(false);
-            setShowReason(true);
-          }}
-        />
-      )}
-
-      {/* ✅ 2차 사유 입력 모달 */}
-      {showReason && (
-        <CancelReasonModal
-          type={reasonType}
-          onBack={() => {
-            setShowReason(false);
-            setShowConfirm(true);
-          }}
-          onSubmit={handleFinalSubmit}
+      {modalType && (
+        <ConfirmModal
+          type={modalType}
+          onClose={closeModal}
+          onConfirm={handleConfirm}
         />
       )}
     </>
