@@ -1,67 +1,77 @@
 "use client";
 
 import React from "react";
+import styles from "../reservation/page.module.css";
 
-export default function ConfirmModal({ type, onClose, onConfirm, reason, setReason }) {
-  const isInputRequired = type === "cancel" || type === "reject";
-
-  const getTitle = () => {
-    if (type === "cancel") return "취소 사유";
-    if (type === "reject") return "거절 사유";
+export default function ConfirmModal({ type, onConfirm, onCancel }) {
+  const getModalTitle = () => {
     return "알림";
   };
 
-  const getMessage = () => {
+  const getModalMessage = () => {
     switch (type) {
-      case "approve": return "해당 상담 신청을 승인 하시겠습니까?";
-      case "reject": return "해당 상담 신청을 거절 하시겠습니까?";
-      case "delete": return "해당 예약내역을 삭제 하시겠습니까?";
-      case "complete": return "해당 상담을 완료 처리하시겠습니까?";
-      case "cancel": return "해당 상담을 취소 하시겠습니까?";
-      default: return "상태를 변경하시겠습니까?";
+      case "approve":
+        return "해당 상담 신청을 승인 하시겠습니까?";
+      case "reject":
+        return "해당 상담 신청을 거절 하시겠습니까?";
+      case "cancel":
+        return "해당 상담을 취소 하시겠습니까?";
+      case "complete":
+        return "해당 상담을 완료 처리하시겠습니까?";
+      case "delete":
+        return "해당 예약내역을 삭제 하시겠습니까?";
+      default:
+        return "상태를 변경하시겠습니까?";
     }
   };
 
-  const getConfirmLabel = () => {
-    if (isInputRequired) return "Submit";
-    if (type === "approve") return "Approve";
-    if (type === "complete") return "Complete";
-    if (type === "reject") return "Reject";
-    if (type === "cancel") return "Confirm";
-    if (type === "delete") return "Delete";
-    return "Confirm";
+  const getConfirmButtonLabel = () => {
+    switch (type) {
+      case "approve":
+        return "Approve";
+      case "reject":
+        return "Reject";
+      case "cancel":
+        return "Cancel";
+      case "complete":
+        return "Complete";
+      case "delete":
+        return "Delete";
+      default:
+        return "Confirm";
+    }
   };
 
-  const getButtonColor = () => {
-    return type === "approve" || type === "complete" ? "#9C7DEB" : "#EF5350";
+  const getConfirmButtonClass = () => {
+    switch (type) {
+      case "approve":
+      case "complete":
+        return styles.purpleButton;
+      case "reject":
+      case "cancel":
+      case "delete":
+        return styles.redButton;
+      default:
+        return styles.purpleButton;
+    }
   };
 
   return (
-    <div style={overlay}>
-      <div style={modal}>
-        <h3 style={title}>{getTitle()}</h3>
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalBox}>
+        <div className={styles.modalTitle}>{getModalTitle()}</div>
+        <div className={styles.modalText}>{getModalMessage()}</div>
 
-        {!isInputRequired && (
-          <p style={message}>{getMessage()}</p>
-        )}
-
-        {isInputRequired && (
-          <textarea
-            style={textarea}
-            placeholder={type === "cancel" ? "예약을 취소하는 사유를 입력해주세요" : "거절 사유를 입력해주세요"}
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-          />
-        )}
-
-        <div style={buttonWrap}>
-          <button
-            style={{ ...confirmBtn, backgroundColor: getButtonColor() }}
-            onClick={onConfirm}
-          >
-            {getConfirmLabel()}
+        <div className={styles.modalButtons}>
+          {/* 왼쪽: Confirm 버튼 */}
+          <button onClick={onConfirm} className={getConfirmButtonClass()}>
+            {getConfirmButtonLabel()}
           </button>
-          <button style={backBtn} onClick={onClose}>Back</button>
+
+          {/* 오른쪽: Back 버튼 */}
+          <button onClick={onCancel} className={styles.backBtn}>
+            Back
+          </button>
         </div>
       </div>
     </div>

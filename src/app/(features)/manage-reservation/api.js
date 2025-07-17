@@ -14,12 +14,12 @@ export const getConsultationsByManagerId = async (managerId) => {
   return response.data?.results?.consultations || [];
 };
 
-export const updateConsultationStatus = async (sessionId, statusUpdateRequestDto) => {
+export const updateConsultationStatus = async (sessionId, status) => {
   const token = localStorage.getItem("accessToken");
 
   return await axios.patch(
-    `${BASE_URL}/${sessionId}/status`,
-    statusUpdateRequestDto,
+    `http://localhost:8000/api/v1/consulting-service/consulting/${sessionId}/status`,
+    { status },
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -28,3 +28,21 @@ export const updateConsultationStatus = async (sessionId, statusUpdateRequestDto
     }
   );
 };
+
+// userId로 유저 정보 불러오기
+export const getUserById = async (userId) => {
+  const token = localStorage.getItem("accessToken");
+
+  const response = await axios.get(
+    `http://localhost:8000/api/v1/user-service/users/${userId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  // 바로 응답 객체 반환
+  return response.data;
+};
+
