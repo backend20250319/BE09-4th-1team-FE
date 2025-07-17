@@ -3,7 +3,9 @@
 import React from 'react';
 import styles from '../page.module.css';
 
-export default function CancelModal({ onClose, onConfirm, type = 'cancel' }) {
+export default function CancelModal({ isOpen, onClose, onConfirm, type = 'cancel' }) {
+  if (!isOpen) return null; // ✅ 표시 여부 체크
+
   const message =
     type === 'reject'
       ? '해당 예약을 거절하시겠습니까?'

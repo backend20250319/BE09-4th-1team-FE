@@ -3,8 +3,10 @@
 import React, { useState } from 'react';
 import styles from '../page.module.css';
 
-export default function CancelReasonModal({ onBack, onSubmit, type = 'cancel' }) {
+export default function CancelReasonModal({ isOpen, onBack, onSubmit, type = 'cancel' }) {
   const [reason, setReason] = useState('');
+
+  if (!isOpen) return null; // ✅ 표시 여부 체크
 
   const handleSubmit = () => {
     if (!reason.trim()) {
@@ -14,7 +16,6 @@ export default function CancelReasonModal({ onBack, onSubmit, type = 'cancel' })
     onSubmit(reason);
   };
 
-  // type에 따라 텍스트 다르게 표시
   const title = type === 'reject' ? '거절 사유' : '취소 사유';
   const placeholder = type === 'reject'
     ? '예약을 거절하는 사유를 입력해주세요'
