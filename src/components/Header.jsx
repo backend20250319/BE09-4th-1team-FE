@@ -47,7 +47,7 @@ export default function Header() {
       <nav className="menu-bar">
         <Link href="/suggestion">커뮤니티</Link>
         <Link href="/consulting">예약</Link>
-        <Link href="/news">뉴스</Link>
+        {/* <Link href="/news">뉴스</Link> */}
       </nav>
 
       {/* 사용자 정보 */}

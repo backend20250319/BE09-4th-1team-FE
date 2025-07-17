@@ -44,7 +44,7 @@ export default function ReservationCard({ data }) {
       <div className={styles.card}>
         <div className={styles.info}>
           <div className={styles.row}>
-            <img className={styles.avatar} src="https://randomuser.me/api/portraits/men/32.jpg" alt="profile" />
+            {/* <img className={styles.avatar} src="https://randomuser.me/api/portraits/men/32.jpg" alt="profile" /> */}
             <span>{name}</span>
             <span>{date}</span>
             <span>{time}</span>

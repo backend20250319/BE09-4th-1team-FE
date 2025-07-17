@@ -6,10 +6,11 @@ import CreateUserModal from './CreateUserModal';
 import ResetPasswordModal from './ResetPasswordModal';
 import BanStudentModal from './BanStudentModal';
 import { fetchUsers, createUser, banUser, unbanUser, resetUserPassword } from './api';
+import reservationStyles from '../reservation/page.module.css';
 
 export default function ManageStudentsPage() {
   const [search, setSearch] = useState('');
-  const [activeTab, setActiveTab] = useState('students');
+  // const [activeTab, setActiveTab] = useState('students'); // 제거
   const [users, setUsers] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [resetTarget, setResetTarget] = useState(null); // {id, username}
@@ -55,80 +56,72 @@ export default function ManageStudentsPage() {
   };
 
   return (
-    <div className={styles.pageContainer}>
-      <nav className={styles.lnb}>User Management</nav>
-      <div style={{ display: 'flex' }}>
-        <aside className={styles.snbContainer}>
-          <div className={styles.menuButtonGroup}>
-            <button
-              className={`${styles.menuButton} ${activeTab === 'students' ? styles.selected : ''}`}
-              onClick={() => setActiveTab('students')}
-            >
-              User List
-            </button>
-          </div>
-        </aside>
-        <main style={{ flex: 1, padding: '40px', backgroundColor: '#fff' }}>
-          {activeTab === 'students' && (
-            <>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-                <input
-                  className={styles.input}
-                  type="text"
-                  placeholder="Search by email or name"
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                  style={{ width: 240, marginRight: 16 }}
-                />
-                <button className={styles.positiveButton} onClick={() => setShowCreateModal(true)}>Create User</button>
-              </div>
-              <div className={styles.profileTable} style={{ width: 600 }}>
-                <div className={styles.row} style={{ fontWeight: 'bold', borderBottom: '1px solid #eee' }}>
-                  <span className={styles.label}>Email</span>
-                  <span className={styles.label}>Name</span>
-                  <span className={styles.label}>Role</span>
-                  <span className={styles.label}>Course</span>
-                  <span className={styles.label}>Status</span>
-                  <span className={styles.label}>Manage</span>
-                </div>
-                {filteredUsers.map(u => (
-                  <div className={styles.row} key={u.id}>
-                    <span className={styles.value}>{u.email}</span>
-                    <span className={styles.value}>{u.username}</span>
-                    <span className={styles.value}>{u.role}</span>
-                    <span className={styles.value}>{u.course}</span>
-                    <span className={styles.value}>{u.status}</span>
-                    <span className={styles.value}>
-                      <button className={styles.positiveButton} style={{ marginRight: 4 }} onClick={() => handleResetPassword(u.id, u.username)}>Reset PW</button>
-                      <button className={styles.negativeButton} onClick={() => handleBanUser(u.id, u.username)}>Ban</button>
-                    </span>
-                  </div>
-                ))}
-              </div>
-              {showCreateModal && (
-                <CreateUserModal
-                  onClose={() => setShowCreateModal(false)}
-                  onSubmit={handleCreateUser}
-                />
-              )}
-              {resetTarget && (
-                <ResetPasswordModal
-                  username={resetTarget.username}
-                  onClose={() => setResetTarget(null)}
-                  onSubmit={handleResetPasswordSubmit}
-                />
-              )}
-              {banTarget && (
-                <BanStudentModal
-                  username={banTarget.username}
-                  onClose={() => setBanTarget(null)}
-                  onSubmit={handleBanUserSubmit}
-                />
-              )}
-            </>
-          )}
-        </main>
+    <main className={styles.mainContent}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+        <div className={styles.searchBar}>
+          <span className={styles.searchIcon}>🔍</span>
+          <input
+            className={styles.searchInput}
+            type="text"
+            placeholder="이메일 또는 이름으로 검색"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+        </div>
+        <button className={styles.createUserBtn} onClick={() => setShowCreateModal(true)}>
+          <span style={{ fontSize: '1.3em', fontWeight: '900', marginRight: 2 }}>＋</span>
+          Create User
+        </button>
       </div>
-    </div>
+      <div className={reservationStyles.cardList}>
+        {filteredUsers.length === 0 ? (
+          <div style={{textAlign:'center', color:'#888', padding:'48px 0', fontSize:18, width:'100%'}}>학생이 없습니다.</div>
+        ) : (
+          filteredUsers.map(u => (
+            <div className={styles.studentCardNews} key={u.id}>
+              <div className={styles.cardProfile}>
+                {u.username ? u.username[0].toUpperCase() : '?'}
+              </div>
+              <div className={styles.cardHeader}>
+                <span className={styles.studentName}>{u.username}</span>
+                <span className={styles.studentEmail}>{u.email}</span>
+                <div className={styles.cardInfoRow}>
+                  <span>{u.role}</span>
+                  <span>{u.course}</span>
+                </div>
+              </div>
+              <div className={styles.cardButtonRow}>
+                <button className={styles.positiveButton} onClick={() => handleResetPassword(u.id, u.username)}>
+                  <span style={{fontSize:'1.1em'}}>🔄</span> Reset PW
+                </button>
+                <button className={styles.negativeButton} onClick={() => handleBanUser(u.id, u.username)}>
+                  <span style={{fontSize:'1.1em'}}>🚫</span> Ban
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+      {showCreateModal && (
+        <CreateUserModal
+          onClose={() => setShowCreateModal(false)}
+          onSubmit={handleCreateUser}
+        />
+      )}
+      {resetTarget && (
+        <ResetPasswordModal
+          username={resetTarget.username}
+          onClose={() => setResetTarget(null)}
+          onSubmit={handleResetPasswordSubmit}
+        />
+      )}
+      {banTarget && (
+        <BanStudentModal
+          username={banTarget.username}
+          onClose={() => setBanTarget(null)}
+          onSubmit={handleBanUserSubmit}
+        />
+      )}
+    </main>
   );
 } 
