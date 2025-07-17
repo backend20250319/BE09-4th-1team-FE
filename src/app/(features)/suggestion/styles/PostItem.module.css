@@ -1,0 +1,74 @@
+/* components/PostItem.module.css */
+
+.postItemRow {
+  display: flex; /* 가로로 정렬 */
+  justify-content: center;
+  align-items: center; /* 세로 중앙 정렬 */
+  padding: 20px 20px;
+  border-bottom: 1px solid #e9ecef; /* 각 행의 하단 구분선 */
+  background-color: #fff; /* 기본 배경색 */
+  font-size: 15px;
+  color: #495057;
+}
+
+.title {
+  border-bottom: 2px solid #3fb9af; /* 각 행의 하단 구분선 */
+  margin-bottom: 20px;
+}
+
+.title,
+.title * {
+  font-weight: 500 !important;
+  color: #343a40 !important;
+}
+
+/* 각 컬럼별 스타일 및 너비 설정 */
+/* flex-basis: 각 아이템의 기본 크기 */
+/* flex-grow: 남은 공간을 채울 비율 */
+/* flex-shrink: 공간이 부족할 때 줄어들 비율 */
+.columnId {
+  flex: 0 0 50px; /* 번호: 고정 너비 */
+  text-align: center;
+}
+
+.columnTitle {
+  flex: 0 0 500px; /* 제목: 남은 공간 모두 차지 (가장 넓게) */
+  padding-left: 20px;
+  font-weight: 500;
+  color: #343a40;
+  overflow: hidden; /* 내용이 넘칠 경우 숨김 */
+  text-overflow: ellipsis; /* 넘치는 내용 ... 처리 */
+  white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+.commentCount {
+  color: #007bff; /* 파란색 (이미지 참고) */
+  font-weight: 400;
+  margin-left: 5px;
+}
+
+.columnStatus {
+  flex: 0 0 100px; /* 상태: 고정 너비 */
+  text-align: center;
+  font-weight: 500;
+}
+
+.statusPending {
+  color: #6c757d; /* 회색 계열 (이미지 '대기중' 참고) */
+}
+
+.statusCompleted {
+  color: #8c78fa; /* 보라색 계열 (이미지 '답변완료' 참고) */
+}
+
+.columnAuthor {
+  flex: 0 0 100px; /* 작성자: 고정 너비 */
+  text-align: center;
+}
+
+.columnDate {
+  flex: 0 0 120px; /* 작성일: 고정 너비 */
+  text-align: center;
+  color: #6c757d;
+  font-size: 14px;
+}

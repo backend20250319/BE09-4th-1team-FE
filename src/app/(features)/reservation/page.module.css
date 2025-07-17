@@ -1,0 +1,354 @@
+/* Layout */
+.container {
+  max-width: 1200px; /* 기존보다 크게 */
+  margin: 0 auto;
+  font-family: sans-serif;
+}
+
+.title {
+  font-size: 48px;
+  line-height: 64px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  color: #888;
+  margin-bottom: 30px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.tab {
+  color: #999;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.tab:hover {
+  color: #555;
+}
+
+.activeTab {
+  color: #000;
+  font-weight: bold;
+  border-bottom: 2px solid black;
+  padding-bottom: 2px;
+  cursor: pointer;
+}
+
+/* Card */
+.card {
+  background: #f7f2ff;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+}
+
+/* Card Content */
+.info {
+  flex: 1;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+}
+
+.group {
+  color: #8a7ef2;
+  font-weight: bold;
+}
+/* 3. 상태 + 버튼 → 가로 배치, 충분한 간격 */
+.statusButtonArea {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 150px; /* 상태와 버튼 사이 넓힘 */
+  flex: 2;
+}
+
+/* 상태 텍스트 */
+.statusText {
+  font-size: 15px;
+  font-weight: bold;
+}
+/* Status Colors */
+.waiting {
+  color: #999;
+}
+
+.approved {
+  color: #726fff;
+}
+
+.rejected {
+  color: #ff4e4e;
+}
+
+.cancelled {
+  color: #c43737;
+}
+
+.completed {
+  color: #25a17c;
+}
+
+/* Buttons 공통 속성 + 세로 정렬 */
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+}
+
+.buttonGroup button {
+  width: 100px;
+  padding: 8px 0;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+/* 버튼별 색상 */
+.approveButton {
+  background-color: #7d6ff2;
+  color: white;
+}
+
+.completeButton {
+  background-color: #7d6ff2;
+  color: white;
+}
+
+.cancelButton {
+  background-color: #ff4e4e;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 999px;
+  width: 100px;
+  height: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+
+
+/* 관리자 메시지 */
+.adminMessage {
+  background: white;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 14px;
+  line-height: 1.0;
+  color: #333;
+}
+
+.messageTime {
+  color: #4a9de0;
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalBox {
+  background: white;
+  border-radius: 16px;
+  padding: 30px 40px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.modalTitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.modalText {
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.confirmBtn {
+  background-color: #ff4e4e;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.backBtn {
+  background: white;
+  color: #7f56d9;
+  border: 1.5px solid #7f56d9;
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  min-width: 100px;
+}
+
+/* Textarea */
+.textarea {
+  width: 100%;
+  height: 130px;
+  padding: 12px;
+  resize: none;
+  border: none;
+  border-radius: 12px;
+  background-color: #f2f2f2;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+  margin-bottom: 24px;
+}
+
+.studentButtonWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+/* 2. 날짜 / 시간 → 좌우 정렬 */
+.datetimeBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.datetime {
+  font-size: 15px;
+  font-weight: 500;
+  color: #444;
+}
+
+.time {
+  font-size: 15px;
+  color: #666;
+}
+
+
+.profileWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+
+.infoSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.buttonWrapper {
+  display: flex;
+  align-items: center;
+}
+.purpleButton {
+  background: #726fff;
+  color: white;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 999px;
+  font-weight: bold;
+  cursor: pointer;
+  min-width: 100px;
+}
+
+.redButton {
+  background: #ff4e4e;
+  color: white;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 999px;
+  font-weight: bold;
+  cursor: pointer;
+  min-width: 100px;
+}
+/* 1. 과정/이름 */
+.userInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 150px;
+  flex: 2;
+}
+
+.course {
+  color: #7d6ff2;
+  font-weight: bold;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.name {
+  font-weight: 500;
+  font-size: 16px;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

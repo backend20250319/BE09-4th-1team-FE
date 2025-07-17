@@ -1,0 +1,213 @@
+.item-container {
+    display: flex;
+    padding: 24px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+    border-radius: 20px;
+    background: #eee;
+}
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+    /* background-color: red; */
+}
+
+.item-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.item-left .course {
+    color: var(--PlayData-purple-light, #8876d9);
+    text-align: center;
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 125% */
+}
+
+.item-left .name {
+    color: #000;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px; /* 125% */
+}
+
+.item-left .date {
+    color: var(--PlayData-Gray, #3fb9af);
+    text-align: center;
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 125% */
+}
+
+.item-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    position: relative; /* 드롭다운 위치 기준 */
+}
+
+.item-right .reaction {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.item-right .icon {
+    width: 24px;
+    height: 24px;
+}
+
+.item-right .like-count {
+    color: var(--PlayData-purple-light, #8876d9);
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px; /* 125% */
+}
+
+.item-right .unlike-count {
+    color: var(--Black, #000);
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px; /* 125% */
+}
+
+.menu-dropdown {
+    position: absolute;
+    top: 100%; /* 메뉴 버튼 바로 아래 */
+    z-index: 10; /* 다른 요소 위에 보이도록 */
+    width: 212px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    border-radius: 10px;
+    background: var(--White, #fff);
+
+    /* Dropshadow */
+    box-shadow: 0px 10px 24px 0px rgba(0, 0, 0, 0.22);
+}
+
+.menu-dropdown .edit,
+.menu-dropdown .delete {
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    padding: 18px 12px 18px 24px;
+    justify-content: space-between;
+    align-items: center;
+
+    color: var(--Black, #000);
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 125% */
+}
+
+.menu-dropdown .edit:hover,
+.menu-dropdown .delete:hover {
+    background-color: var(--gray-ddd, #ddd);
+    cursor: pointer; /* 마우스 커서 포인터로 변경 */
+}
+
+.menu-dropdown img {
+    width: 24px;
+    height: 24px;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    background-color: #d9d9d9;
+    border: none;
+}
+
+.content-container {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    padding: 12px 24px;
+}
+
+.content {
+    text-align: left;
+}
+
+/* 에디터 부분 ------------ */
+.edit-mode-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column; /* 수직 정렬 */
+    gap: 12px; /* textarea와 버튼 사이 여백 */
+}
+
+.edit-textarea {
+    resize: none; /* 우측 하단 리사이즈 표시 제거 */
+    /* 기존 스타일 유지 */
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    font-size: 16px;
+    font-family: Roboto, sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.edit-buttons {
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    gap: 8px; /* 버튼 사이 간격 */
+}
+
+/* 공통 버튼 스타일 */
+.edit-buttons button {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: Roboto, sans-serif;
+    transition: background-color 0.2s;
+}
+
+/* 취소 버튼 - 왼쪽 */
+.edit-buttons button:first-child {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.edit-buttons button:first-child:hover {
+    background-color: #c7c7c7;
+}
+
+/* 저장 버튼 - 오른쪽 */
+.edit-buttons button:last-child {
+    background-color: #8876d9;
+    color: #fff;
+}
+
+.edit-buttons button:last-child:hover {
+    background-color: #504197;
+}

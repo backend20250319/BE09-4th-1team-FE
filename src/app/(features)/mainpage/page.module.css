@@ -1,0 +1,91 @@
+.container {
+  background: url('./image/mainpage.png') no-repeat center center/cover;
+  min-height: 100vh;
+  padding: 3rem 2rem;
+  color: white;
+  text-align: center;
+}
+
+.title {
+  font-size: 3.5rem;        
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.3rem;         
+  color: #ccc;
+  margin-bottom: 3rem;
+}
+
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem;
+  border-radius: 16px;
+  background-color: transparent;
+}
+
+.leftCard {
+  flex-direction: row;
+}
+
+.rightCard {
+  flex-direction: row;
+}
+
+.cardContent {
+  flex: 1;
+  padding: 0 1.5rem;
+}
+
+.leftCard .cardContent {
+  text-align: left;
+}
+
+.rightCard .cardContent {
+  text-align: right;
+  margin-left: auto;
+}
+
+.cardContent h2 {
+  font-size: 2.2rem;       
+  margin-bottom: 1rem;
+}
+
+.cardContent p {
+  white-space: pre-line;
+  font-size: 1.2rem;       
+  color: #a0e0e0;
+  line-height: 1.8;
+}
+
+.absoluteLeftButton {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.arrowLeft,
+.arrowRight {
+  font-size: 3.5rem;          
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.arrowLeft:hover,
+.arrowRight:hover {
+  transform: scale(1.2);
+}

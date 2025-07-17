@@ -1,0 +1,77 @@
+.comment-form {
+    background-color: #fff;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.form-inner {
+    display: flex;
+    padding: 24px 41px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.input-container {
+    width: 100%;
+}
+
+.input-wrapper {
+    position: relative;
+    /* display: flex; */
+    /* flex-direction: column; */
+    width: 100%;
+}
+
+.comment-input {
+    width: 100%;
+    min-height: 120px;
+    font-size: 16px;
+    /* padding: 16px; */
+    border: none;
+    resize: none;
+    outline: none;
+    color: #000;
+    font-family: Roboto;
+}
+
+.text-count-wrapper {
+    display: flex;
+    justify-content: flex-end; /* 👉 우측 정렬 */
+    width: 100%;
+    margin-top: 4px; /* 선택: textarea 아래 여백 */
+}
+
+.text-count {
+    bottom: 4px;
+    right: 16px;
+    color: #ccc;
+    font-size: 18px;
+}
+
+.divider {
+    height: 1px;
+    background: #d9d9d9;
+    border: none;
+    width: 100%;
+}
+
+.submit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* ← 수직 기준 가운데 정렬 */
+    width: 100%;
+}
+
+.submit-btn {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
