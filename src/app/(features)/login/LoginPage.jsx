@@ -21,6 +21,13 @@ const LoginPage = () => {
   const handleClearUsername = () => setUsername('');
   const handleTogglePassword = () => setShowPassword((prev) => !prev);
 
+  // 엔터로 로그인
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const loginBtn = document.getElementById('login-btn');
+    if (loginBtn) loginBtn.click();
+  };
+
   return (
     <div className={styles["login-page"]}>
       <header className={styles.header}>
@@ -52,7 +59,7 @@ const LoginPage = () => {
 
           <div className={styles["frame002"]}>
             <div className={styles["login-title"]}>Login</div>
-            <div className={styles["frame003"]}>
+            <form className={styles["frame003"]} onSubmit={handleLogin}>
               <div className={styles["login-input"]}>
                 {username && (
                   <label className={styles["input-label"]} htmlFor="username">ID</label>
@@ -118,14 +125,13 @@ const LoginPage = () => {
                   <div className={styles["input-label-error"]}>{passwordError}</div>
                 )}
               </div>
-            </div>
-
-            <div className={styles["login-button"]}>
-              <LoginButtons username={username} password={password} />
-              {/* <div className={styles["invalid-password-wrapper"]}>
-                <FindIdPwButton />
-              </div> */}
-            </div>
+              <div className={styles["login-button"]}>
+                <LoginButtons username={username} password={password} id="login-btn" />
+                {/* <div className={styles["invalid-password-wrapper"]}>
+                  <FindIdPwButton />
+                </div> */}
+              </div>
+            </form>
           </div>
         </div>
       </div>

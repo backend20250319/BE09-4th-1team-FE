@@ -34,7 +34,8 @@ export const Search = () => {
         direction: "DESC",
       };
 
-      const response = await getSuggestionPosts(params);
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await getSuggestionPosts(accessToken, params);
       setPosts(response.content || []);
       setTotalPages(response.totalPages || 0);
       setTotalElements(response.totalElements || 0);

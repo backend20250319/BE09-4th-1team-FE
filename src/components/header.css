@@ -5,6 +5,10 @@
     align-items: center;
     align-self: stretch;
     border-bottom: solid 1px #ddd;
+    max-width: 1440px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .logo {

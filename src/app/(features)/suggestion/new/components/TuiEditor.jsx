@@ -42,12 +42,19 @@ const TuiEditor = () => {
           return;
         }
 
+        // userId를 localStorage에서 읽어옴
+        const userId = Number(localStorage.getItem('userId'));
+        if (!userId) {
+          alert("로그인 정보가 없습니다. 다시 로그인 해주세요.");
+          setIsSubmitting(false);
+          return;
+        }
+
         // PostServiceApi를 사용한 실제 백엔드 POST 요청
         const postData = {
           title: title,
           content: markdownContent,
-          // userId는 실제 인증 시스템에서 가져와야 합니다
-          userId: 1 // 임시로 1로 설정
+          userId: userId // 실제 로그인한 유저 id로 설정
         };
 
         const response = await createSuggestionPost(postData);
