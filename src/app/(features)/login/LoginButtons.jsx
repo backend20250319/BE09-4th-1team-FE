@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
-export const LoginButtons = ({ className, username, password }) => {
+export const LoginButtons = ({ className, username, password, id }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const isDisabled = !(username && password) || isLoading;
@@ -33,9 +33,10 @@ export const LoginButtons = ({ className, username, password }) => {
       // 사용자 정보도 저장 (선택사항)
       localStorage.setItem('username', res.data.username);
       localStorage.setItem('userRole', res.data.role);
+      localStorage.setItem('userId', res.data.userId);
 
-      alert('로그인 성공!');
-      router.push('/mypage'); // 마이페이지로 이동
+      // alert 제거: 로그인 성공 시 알림 없음
+      router.push('/mypage/profile'); // 마이페이지 프로필로 이동
     } catch (err) {
       console.error('로그인 에러:', err);
       
@@ -62,7 +63,9 @@ export const LoginButtons = ({ className, username, password }) => {
 
   return (
     <button
+      type="submit"
       className={className}
+      id={id}
       disabled={isDisabled}
       onClick={handleLogin}
     >
